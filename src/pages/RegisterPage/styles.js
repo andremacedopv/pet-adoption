@@ -9,7 +9,7 @@ export const Container = styled.View`
 
 export const Info = styled.Text`
   width: 90%;
-  margin-top: 16px;
+  margin: 16px;
   text-align: center;
   color: #434343;
   background-color: #cfe9e5;
@@ -18,13 +18,31 @@ export const Info = styled.Text`
 `
 export const Header = styled.Text`
   width: 90%;
-  padding-top: 28px;
+  margin: 28px 0 16px;
   color: #88c9bf;
-`
-export const ButtonArea = styled.View`
-  width: 70%;
 `
 export const InputArea = styled.View`
   width: 90%;
+  margin-bottom: 28px;
+`
+
+export const InputImage = styled.TouchableOpacity`
+  width: 45%;
+  margin-bottom: 32px;
+  background-color: #e6e7e7;
+  align-items: center;
+  justify-content: center;
+  height: 128px;
+  width: 128px;
+  flexDirection: column;
+`
+
+export const TextImage = styled.Text`
+  font-size: 14px;
+  color: #757575;
+`
+
+export const ButtonArea = styled.View`
+  width: 70%;
   margin-bottom: 28px;
 `
