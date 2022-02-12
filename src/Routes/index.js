@@ -36,7 +36,7 @@ const Routes = () => {
                 name="SignUp"
                 component={RegisterPage}
                 options={{
-                    title: "Cadastrar",
+                    title: "Cadastro Pessoal",
                     headerStyle: {
                         backgroundColor: '#cfe9e5',
                     },

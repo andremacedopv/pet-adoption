@@ -44,5 +44,5 @@ export const TextImage = styled.Text`
 
 export const ButtonArea = styled.View`
   width: 70%;
-  margin-bottom: 28px;
+  margin: 32px 0 24px;
 `

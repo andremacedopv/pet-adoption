@@ -1,7 +1,7 @@
-import { Container, Header, ButtonArea, InputArea, Info, InputImage, TextImage} from './styles';
+import { Container, Header, ButtonArea, InputArea, Info} from './styles';
 import Button from "../../components/Button";
 import Input from '../../components/Input';
-import { Ionicons } from '@expo/vector-icons'; 
+import InputImage from '../../components/InputImage';
 import { ScrollView, Text } from 'react-native';
 
 const RegisterPage = () => {
@@ -29,12 +29,8 @@ const RegisterPage = () => {
         <InputArea><Input placeholder="Confirmação de Senha"></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
-        <InputImage>
-          <Ionicons name="add-circle-outline" size={28} color="#595959" />
-          <TextImage>  
-            adicionar foto
-          </TextImage>
-        </InputImage>
+        <InputImage/>
+        
         <ButtonArea>
           <Button> FAZER CADASTRO </Button>
         </ButtonArea>
