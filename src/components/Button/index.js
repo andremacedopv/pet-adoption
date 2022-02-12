@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, ButtonText, IconDiv } from './styles';
 
-const Button = ({children, type, onCLick, Icon, props}) => {
+const Button = ({children, type, onPress, Icon, props}) => {
   return (
-      <Container type={type} onClick={onCLick} {...props}>
+      <Container type={type} onPress={onPress} {...props}>
         {Icon?
           <IconDiv>
             <Icon /> 
