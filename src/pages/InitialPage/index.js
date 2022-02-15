@@ -17,7 +17,7 @@ const InitialPage = ({navigation}) => {
   
   return(
     <Container>
-        <Title>Ops!</Title>
+        <Title>Olá!</Title>
         <TextArea>
             <TextInfo>Bem vindo ao Meau!</TextInfo>
             <TextInfo>Aqui você pode adotar, doar e ajudar</TextInfo>
