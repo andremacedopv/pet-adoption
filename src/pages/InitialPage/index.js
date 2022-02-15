@@ -1,10 +1,9 @@
-import { Container, Title, TextInfo, ImageLogo} from './styles';
+import { Container, Title, TextInfo, ImageLogo, ButtonArea, TextArea} from './styles';
 import { Text, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import Logo from '../../../assets/Meau_marca_2.png';
 import Button from "../../components/Button";
 import { useFonts, Courgette_400Regular } from '@expo-google-fonts/courgette';
-import { ButtonArea } from '../LoginPage/styles';
 
 const InitialPage = ({navigation}) => {
   
@@ -19,10 +18,12 @@ const InitialPage = ({navigation}) => {
   return(
     <Container>
         <Title>Ops!</Title>
-        <TextInfo>Bem vindo ao Meau!</TextInfo>
-        <TextInfo>Aqui você pode adotar, doar e ajudar</TextInfo>
-        <TextInfo>cães e gatos com facilidade.</TextInfo>
-        <TextInfo>Qual o seu interesse?</TextInfo>
+        <TextArea>
+            <TextInfo>Bem vindo ao Meau!</TextInfo>
+            <TextInfo>Aqui você pode adotar, doar e ajudar</TextInfo>
+            <TextInfo>cães e gatos com facilidade.</TextInfo>
+            <TextInfo>Qual o seu interesse?</TextInfo>
+        </TextArea>
         <ButtonArea>
             <Button type="normal">ADOTAR</Button>
         </ButtonArea>
@@ -33,7 +34,7 @@ const InitialPage = ({navigation}) => {
             <Button type="normal">CADASTRAR ANIMAL</Button>
         </ButtonArea>
         <ButtonArea>
-            <Button type="link">login</Button>
+            <Button type="link" onPress={() => navigation.navigate("Login")}>login</Button>
         </ButtonArea>
         <ImageLogo
             source={Logo}
