@@ -230,7 +230,7 @@ const AnimalRegisterPage = () => {
                 <Input placeholder="Compartilhe a história do animal"></Input>
             </InputArea>
             <FinishButton>
-                <Button>PROCURAR AJUDA</Button>
+                <Button>{adoptioBtn? 'COLOCAR PARA ADOÇÃO' : careBtn? 'PROCURAR PADRINHO' : 'PROCURAR AJUDA'}</Button>
             </FinishButton>
 
             </>
