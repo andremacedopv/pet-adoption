@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterPageOps from '../pages/RegisterPageOps';
+import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,7 +14,7 @@ const Routes = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
                 name="Ops"
                 component={RegisterPageOps}
                 options={{
@@ -50,8 +51,26 @@ const Routes = () => {
                         </MenuButton>
                     )
                 }}
-        />
+        /> */}
             <Stack.Screen
+                name="Cadastro do Animal"
+                component={AnimalRegisterPage}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#cfe9e5',
+                    },
+                    headerTintColor: '#434343',
+                    headerTitleStyle: {
+                      fontWeight: 'bold',
+                    },
+                    headerLeft: () => (
+                        <MenuButton>
+                            <Ionicons name="md-menu" size={30} color="#595959" />
+                        </MenuButton>
+                    )
+                }}
+            />
+            {/* <Stack.Screen
                 name="Login"
                 component={LoginPage}
                 
@@ -69,7 +88,7 @@ const Routes = () => {
                         </MenuButton>
                     )
                 }}
-        />
+        /> */}
             
         </Stack.Navigator>
     </NavigationContainer>
