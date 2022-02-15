@@ -15,7 +15,7 @@ export const RadioGroup = styled.View`
 export const RadioItem = styled.View`
     flex-direction: row;
     align-items: center;
-    min-width: 25%;
+    min-width: 33%;
 `;
 
 export const TitleText = styled.Text`
