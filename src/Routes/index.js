@@ -53,7 +53,7 @@ const Routes = () => {
                 }}
         /> */}
             <Stack.Screen
-                name="Teste"
+                name="Cadastro do Animal"
                 component={AnimalRegisterPage}
                 options={{
                     headerStyle: {
