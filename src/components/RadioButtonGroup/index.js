@@ -12,7 +12,7 @@ const RadioButtonGroup = ({groupName, values, state, setState}) => {
           <RadioGroup>
           {values.map((value) => (
             <RadioItem key={value.value}>
-              <RadioButton
+              <RadioButton.Android
               value={value.value}
               status={ state === value.value ? 'checked' : 'unchecked' }
               onPress={() => setState(value.value)}

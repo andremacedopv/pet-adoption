@@ -6,7 +6,7 @@ const Checklist = ({label, state, setter}) => {
   return (
       <Container>
         <CheckItem>
-          <Checkbox
+          <Checkbox.Android
             status={ state ? 'checked' : 'unchecked' }
             onPress={() => setter(!state)}
           />

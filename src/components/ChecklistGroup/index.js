@@ -12,7 +12,7 @@ const ChecklistGroup = ({groupName, values }) => {
           <CheckGroup>
           {values.map((value) => (
             <CheckItem key={value.label}>
-              <Checkbox
+              <Checkbox.Android
               status={ value.state ? 'checked' : 'unchecked' }
               onPress={() => value.setter(!value.state)}
               />
