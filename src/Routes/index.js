@@ -35,25 +35,6 @@ const Routes = () => {
                     }}
             />            
             <Stack.Screen
-                    name="Ops"
-                    component={RegisterPageOps}
-                    options={{
-                        title: "Cadastrar",
-                        headerStyle: {
-                            backgroundColor: '#cfe9e5',
-                        },
-                        headerTintColor: '#434343',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerLeft: () => (
-                            <MenuButton>
-                                <Ionicons name="md-menu" size={30} color="#595959" />
-                            </MenuButton>
-                        )
-                    }}
-            />
-            <Stack.Screen
                     name="SignUp"
                     component={RegisterPage}
                     options={{
@@ -108,6 +89,25 @@ const Routes = () => {
                         </MenuButton>
                     )
                 }}
+            />
+            <Stack.Screen
+                    name="Ops"
+                    component={RegisterPageOps}
+                    options={{
+                        title: "Cadastrar",
+                        headerStyle: {
+                            backgroundColor: '#cfe9e5',
+                        },
+                        headerTintColor: '#434343',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerLeft: () => (
+                            <MenuButton>
+                                <Ionicons name="md-menu" size={30} color="#595959" />
+                            </MenuButton>
+                        )
+                    }}
             />
         </Stack.Navigator>
     </NavigationContainer>

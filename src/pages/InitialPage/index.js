@@ -25,13 +25,13 @@ const InitialPage = ({navigation}) => {
             <TextInfo>Qual o seu interesse?</TextInfo>
         </TextArea>
         <ButtonArea>
-            <Button type="normal">ADOTAR</Button>
+            <Button type="normal" onPress={() => navigation.navigate("Ops")}>ADOTAR</Button>
         </ButtonArea>
         <ButtonArea>
             <Button type="normal">AJUDAR</Button>
         </ButtonArea>
         <ButtonArea>
-            <Button type="normal">CADASTRAR ANIMAL</Button>
+            <Button type="normal" onPress={() => navigation.navigate("Cadastro do Animal")}>CADASTRAR ANIMAL</Button>
         </ButtonArea>
         <ButtonArea>
             <Button type="link" onPress={() => navigation.navigate("Login")}>login</Button>
