@@ -20,6 +20,16 @@ export const Container = styled.TouchableOpacity`
             background-color: #194F7C;
         `
     }
+    ${props => (props.type === 'normal') &&
+        `
+            background-color: #ffd358;
+        `
+    }
+    ${props => (props.type === 'link') &&
+        `
+            background-color: #fafafa;
+        `
+    }
 `;
 
 export const ButtonText = styled.Text`
@@ -37,6 +47,19 @@ export const ButtonText = styled.Text`
             color: #FFF;
         `
     }
+
+    ${props => (props.type === 'normal') &&
+        `
+            color: #434343;
+        `
+    }
+
+    ${props => (props.type === 'link') &&
+        `
+            color: #88c9bf;
+        `
+    }    
+
 `;
 
 export const IconDiv = styled.Text`
