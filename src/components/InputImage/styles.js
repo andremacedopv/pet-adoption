@@ -8,6 +8,7 @@ export const Container = styled.TouchableOpacity`
   height: 128px;
   width: 128px;
   flexDirection: column;
+  box-shadow: 0px 2px 2px #434343;
 `
 
 export const TextImage = styled.Text`
