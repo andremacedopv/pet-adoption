@@ -9,6 +9,12 @@ export const Container = styled.TouchableOpacity`
   width: 128px;
   flexDirection: column;
   box-shadow: 0px 2px 2px #434343;
+
+  ${props => (props.size === 'large') &&
+        `
+        width: 100%;
+        `
+    }
 `
 
 export const TextImage = styled.Text`

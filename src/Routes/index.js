@@ -7,6 +7,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterPageOps from '../pages/RegisterPageOps';
 import InitialPage from '../pages/InitialPage';
+import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -90,7 +91,24 @@ const Routes = () => {
                         )
                     }}
             />
-                
+              <Stack.Screen
+                name="Cadastro do Animal"
+                component={AnimalRegisterPage}
+                options={{
+                    headerStyle: {
+                        backgroundColor: '#cfe9e5',
+                    },
+                    headerTintColor: '#434343',
+                    headerTitleStyle: {
+                      fontWeight: 'bold',
+                    },
+                    headerLeft: () => (
+                        <MenuButton>
+                            <Ionicons name="md-menu" size={30} color="#595959" />
+                        </MenuButton>
+                    )
+                }}
+            />
         </Stack.Navigator>
     </NavigationContainer>
   );
