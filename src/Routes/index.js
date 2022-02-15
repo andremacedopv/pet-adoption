@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterPageOps from '../pages/RegisterPageOps';
-import TestPage from '../pages/TestPage';
+import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,7 +54,7 @@ const Routes = () => {
         /> */}
             <Stack.Screen
                 name="Teste"
-                component={TestPage}
+                component={AnimalRegisterPage}
                 options={{
                     headerStyle: {
                         backgroundColor: '#cfe9e5',

@@ -20,15 +20,9 @@ export const ButtonText = styled.Text`
     color: #434343;
     font-size: 16px;
 
-    ${props => (props.type === 'google') &&
+    ${props => (props.blocked === 'blocked') &&
         `
-            color: #FFF;
-        `
-    }
-
-    ${props => (props.type === 'facebook') &&
-        `
-            color: #FFF;
+            color: #919191;
         `
     }
 `;
