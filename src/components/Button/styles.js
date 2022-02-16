@@ -27,6 +27,7 @@ export const Container = styled.TouchableOpacity`
     }
     ${props => (props.type === 'link') &&
         `
+            box-shadow: none;
             background-color: #fafafa;
         `
     }
