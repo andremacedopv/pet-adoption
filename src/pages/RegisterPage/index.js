@@ -4,7 +4,20 @@ import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
 import { ScrollView, Text } from 'react-native';
 
+import { database } from "../../services/firebase"
+
 const RegisterPage = () => {
+
+  async function handleCreateUser() {
+
+    const roomRef = database.ref('users')
+
+    const firebaseRoom = await roomRef.push({
+      name: "Anderson",
+      senha: "123456"
+    })
+  }
+
   return(
     <ScrollView>
       <Container>
@@ -32,7 +45,9 @@ const RegisterPage = () => {
         <InputImage/>
         
         <ButtonArea>
-          <Button> FAZER CADASTRO </Button>
+          <Button
+            onPress={handleCreateUser}
+          > FAZER CADASTRO </Button>
         </ButtonArea>
 
       </Container>

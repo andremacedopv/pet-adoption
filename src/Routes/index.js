@@ -17,7 +17,7 @@ const Routes = () => {
         <Stack.Navigator>
             <Stack.Screen
                     name="Página Inicial"
-                    component={InitialPage}
+                    component={RegisterPage}
                     options={{
                         title: "",
                         headerStyle: {
