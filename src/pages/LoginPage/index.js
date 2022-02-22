@@ -15,7 +15,7 @@ const LoginPage = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      Alert.alert(JSON.stringify(userCredential.user))
+      Alert.alert("Login feito com sucesso!")
     const user = userCredential.user;
     // ...
   })
