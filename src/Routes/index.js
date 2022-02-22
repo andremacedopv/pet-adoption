@@ -15,7 +15,7 @@ const Routes = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
-            <Stack.Screen
+            {/* <Stack.Screen
                     name="Página Inicial"
                     component={InitialPage}
                     options={{
@@ -33,7 +33,7 @@ const Routes = () => {
                             </MenuButton>
                         )
                     }}
-            />            
+            />             */}
             <Stack.Screen
                     name="SignUp"
                     component={RegisterPage}

@@ -3,6 +3,7 @@ import Button from "../../components/Button";
 import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
 import { ScrollView, Text } from 'react-native';
+import { collection, addDoc } from "firebase/firestore";
 
 import { database } from "../../services/firebase"
 
@@ -10,12 +11,12 @@ const RegisterPage = () => {
 
   async function handleCreateUser() {
 
-    const roomRef = database.ref('users')
-
-    const firebaseRoom = await roomRef.push({
-      name: "Anderson",
-      senha: "123456"
-    })
+    
+    const docRef = await addDoc(collection(database, "users"), {
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815
+    });
   }
 
   return(

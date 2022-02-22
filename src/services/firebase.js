@@ -29,6 +29,6 @@ if (firebase.apps.length === 0) {
   app = firebase.app();
 }
 
-var database = firebase.database();
+var database = firebase.firestore();
 
 export {firebase, database}
