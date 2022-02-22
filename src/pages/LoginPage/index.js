@@ -15,12 +15,12 @@ const LoginPage = () => {
     const auth = getAuth();
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      Alert.alert("Alert Title")
+      Alert.alert("Login feito com sucesso!")
     const user = userCredential.user;
     // ...
   })
   .catch((error) => {
-    Alert.alert("Toma no cu")
+    Alert.alert("Opa, algo de errado aconteceu!")
     const errorCode = error.code;
     const errorMessage = error.message;
   });
