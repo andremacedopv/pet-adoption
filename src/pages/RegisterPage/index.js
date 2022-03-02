@@ -3,13 +3,13 @@ import { Container, Header, ButtonArea, InputArea, Info} from './styles';
 import Button from "../../components/Button";
 import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
-import { ScrollView, Text } from 'react-native';
+import { ScrollView, Alert } from 'react-native';
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 
 import { database } from "../../services/firebase"
 
-const RegisterPage = () => {
+const RegisterPage = ({navigation}) => {
 
   const auth = getAuth();
 
@@ -25,12 +25,34 @@ const RegisterPage = () => {
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
 
   async function handleCreateUser() {
-    // createUserWithEmailAndPassword(auth, "felipevaz444@gmail.com", "123456")
-    // const docRef = await addDoc(collection(database, "users"), {
-    //   first: "Ada",
-    //   last: "Lovelace",
-    //   born: 1815
-    // });
+
+    if (password != passwordConfirmation) {
+      Alert.alert("As senhas não batem!")
+      return
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
+      .then(registeredUser => {
+        addDoc(collection(database, "users"), {
+          uid: registeredUser.user.uid,
+          name: name,
+          age: age,
+          email: email,
+          state: state,
+          city: city,
+          address: address,
+          phone: phone,
+          username: username
+        })
+        Alert.alert("Usuário criado com sucesso!")
+        navigation.navigate('Login')
+      })
+    }
+    catch {
+      Alert.alert("Ocorreu um erro, tente novamente")
+    }
+    
   }
 
   return(
@@ -47,22 +69,22 @@ const RegisterPage = () => {
         <InputArea><Input placeholder="Idade" value={age} onChangeText={(e) => {setAge(e)}}></Input></InputArea>
         <InputArea><Input placeholder="E-mail" value={email} onChangeText={(e) => {setEmail(e)}}></Input></InputArea>
         <InputArea><Input placeholder="Estado" value={state} onChangeText={(e) => {setState(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Cidade"></Input></InputArea>
-        <InputArea><Input placeholder="Endereço"></Input></InputArea>
-        <InputArea><Input placeholder="Telefone"></Input></InputArea>
+        <InputArea><Input placeholder="Cidade" value={city} onChangeText={(e) => {setCity(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Endereço" value={address} onChangeText={(e) => {setAddress(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Telefone" value={phone} onChangeText={(e) => {setPhone(e)}}></Input></InputArea>
         
         <Header> INFORMAÇÕES DE PERFIL </Header>
-        <InputArea><Input placeholder="Nome de usuário"></Input></InputArea>
-        <InputArea><Input placeholder="Senha"></Input></InputArea>
-        <InputArea><Input placeholder="Confirmação de Senha"></Input></InputArea>
+        <InputArea><Input placeholder="Nome de usuário" value={username} onChangeText={(e) => {setUsername(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
         <InputImage/>
         
         <ButtonArea>
-          <Button
-            onPress={handleCreateUser}
-          > FAZER CADASTRO </Button>
+          <Button onPress={handleCreateUser}> 
+            FAZER CADASTRO 
+          </Button>
         </ButtonArea>
 
       </Container>
