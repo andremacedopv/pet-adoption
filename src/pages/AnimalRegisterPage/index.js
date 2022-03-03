@@ -7,8 +7,13 @@ import InputImage from '../../components/InputImage';
 import Input from '../../components/Input';
 import SelectButton from '../../components/SelectButton';
 import Button from '../../components/Button';
+import { collection, addDoc } from "firebase/firestore";
+import { Alert } from 'react-native';
+import { database } from "../../services/firebase"
 
-const AnimalRegisterPage = () => {
+const AnimalRegisterPage = ({navigation}) => {
+    
+    const [name, setName] = useState("")
     const [species, setSpecies] = React.useState('');
     const [sex, setSex] = React.useState('');
     const [size, setSize] = React.useState('');
@@ -88,6 +93,18 @@ const AnimalRegisterPage = () => {
     const [careBtn, setCareBtn] = React.useState(false);
     const [adoptioBtn, setAdoptionBtn] = React.useState(false);
 
+    async function handleAnimalRegister() {
+        await addDoc(collection(database, "pets"), {
+            name: name,
+            age: age,
+            sex: sex,
+            size: size,
+            specie: species   
+        })
+        Alert.alert("Animal cadastrado com sucesso!")
+        navigation.navigate('Ops')
+    }
+
     return( 
         <ScrollArea>
         <Container>
@@ -114,7 +131,7 @@ const AnimalRegisterPage = () => {
 
             <FieldText>NOME DO ANIMAL</FieldText>
             <InputArea>
-                <Input placeholder="Nome do animal"></Input>
+                <Input placeholder="Nome do Animal" value={name} onChangeText={(e) => {setName(e)}}></Input>
             </InputArea>
 
             <FieldText>FOTOS DO ANIMAL</FieldText>
@@ -230,7 +247,7 @@ const AnimalRegisterPage = () => {
                 <Input placeholder="Compartilhe a história do animal"></Input>
             </InputArea>
             <FinishButton>
-                <Button>{adoptioBtn? 'COLOCAR PARA ADOÇÃO' : careBtn? 'PROCURAR PADRINHO' : 'PROCURAR AJUDA'}</Button>
+                <Button onPress={handleAnimalRegister}>{adoptioBtn? 'COLOCAR PARA ADOÇÃO' : careBtn? 'PROCURAR PADRINHO' : 'PROCURAR AJUDA'}</Button>
             </FinishButton>
 
             </>
