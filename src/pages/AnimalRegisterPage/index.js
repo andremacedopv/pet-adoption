@@ -120,63 +120,68 @@ const AnimalRegisterPage = ({navigation}) => {
             return
         }
 
-        await addDoc(collection(database, "pets"), {
-            name: name,
-            age: age,
-            sex: sex,
-            size: size,
-            specie: species,
-            temper: {
-                calm: calm, 
-                guard: guard, 
-                lazy: lazy, 
-                loving: loving, 
-                playful: playful, 
-                timid: timid
-            },   
-            health: {
-                vaccinated: vaccinated,
-                verms: verms,
-                castrated: castrated,
-                sick: sick,
-                illnesses: illnesses
-            },
-            adoption: adoptioBtn,
-            adoptionOptions: {
-                adoptionTerms: adoptionTerms,
-                housePhotos: housePhotos,
-                visit: visit,
-                postAdoption: postAdoption,
-                postAdoptionOptions: {
-                    oneMonth: oneMonth,
-                    threeMonths: threeMonths,
-                    sixMonths: sixMonths
-                }    
-            },
-            sponsorship: careBtn,
-            sponsorshipOptions: {
-                sponsorshipTerm: careTerms,
-                animalVisit: animalVisits,
-                financeHelp: financeHelp,
-                financeHelpOptions: {
-                    food: foodHelp,
-                    health: healthHelp,
-                    objects: objectHelp
-                }
-            },
-            help: helpBtn,
-            helpOptions: {
-                food: food,
-                finance: finance,
-                medicine: medicine,
-                medicineDescription: medicineName,
-                objects: objects,
-                objectsDescription: objectsDesc
-            },
-            aboutAnimal: about
-        })
-        Alert.alert("Animal cadastrado com sucesso!")
-        navigation.navigate('Página Inicial')
+        try {
+            await addDoc(collection(database, "pets"), {
+                name: name,
+                age: age,
+                sex: sex,
+                size: size,
+                specie: species,
+                temper: {
+                    calm: calm, 
+                    guard: guard, 
+                    lazy: lazy, 
+                    loving: loving, 
+                    playful: playful, 
+                    timid: timid
+                },   
+                health: {
+                    vaccinated: vaccinated,
+                    verms: verms,
+                    castrated: castrated,
+                    sick: sick,
+                    illnesses: illnesses
+                },
+                adoption: adoptioBtn,
+                adoptionOptions: {
+                    adoptionTerms: adoptionTerms,
+                    housePhotos: housePhotos,
+                    visit: visit,
+                    postAdoption: postAdoption,
+                    postAdoptionOptions: {
+                        oneMonth: oneMonth,
+                        threeMonths: threeMonths,
+                        sixMonths: sixMonths
+                    }    
+                },
+                sponsorship: careBtn,
+                sponsorshipOptions: {
+                    sponsorshipTerm: careTerms,
+                    animalVisit: animalVisits,
+                    financeHelp: financeHelp,
+                    financeHelpOptions: {
+                        food: foodHelp,
+                        health: healthHelp,
+                        objects: objectHelp
+                    }
+                },
+                help: helpBtn,
+                helpOptions: {
+                    food: food,
+                    finance: finance,
+                    medicine: medicine,
+                    medicineDescription: medicineName,
+                    objects: objects,
+                    objectsDescription: objectsDesc
+                },
+                aboutAnimal: about
+            })
+            Alert.alert("Animal cadastrado com sucesso!")
+            navigation.navigate('Página Inicial')
+        }
+        catch {
+        Alert.alert("Ocorreu um erro, tente novamente")
+        }
     }
 
     return( 
