@@ -99,6 +99,27 @@ const AnimalRegisterPage = ({navigation}) => {
     const [adoptioBtn, setAdoptionBtn] = React.useState(false);
 
     async function handleAnimalRegister() {
+        if (name == "") {
+            Alert.alert("O campo de nome é obrigatório para cadastro")
+            return
+        }
+        if (age == "") {
+            Alert.alert("O campo de idade é obrigatório para cadastro")
+            return
+        }
+        if (sex == "") {
+            Alert.alert("O campo de sexo é obrigatório para cadastro")
+            return
+        }
+        if (size == "") {
+            Alert.alert("O campo de tamanho é obrigatório para cadastro")
+            return
+        }
+        if (species == "") {
+            Alert.alert("O campo de espécie é obrigatório para cadastro")
+            return
+        }
+
         await addDoc(collection(database, "pets"), {
             name: name,
             age: age,
