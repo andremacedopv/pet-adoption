@@ -7,8 +7,13 @@ import InputImage from '../../components/InputImage';
 import Input from '../../components/Input';
 import SelectButton from '../../components/SelectButton';
 import Button from '../../components/Button';
+import { collection, addDoc } from "firebase/firestore";
+import { Alert } from 'react-native';
+import { database } from "../../services/firebase"
 
-const AnimalRegisterPage = () => {
+const AnimalRegisterPage = ({navigation}) => {
+    
+    const [name, setName] = useState("")
     const [species, setSpecies] = React.useState('');
     const [sex, setSex] = React.useState('');
     const [size, setSize] = React.useState('');
@@ -23,7 +28,7 @@ const AnimalRegisterPage = () => {
 
     const [vaccinated, setVaccinated] = React.useState(false);
     const [verms, setVerms] = React.useState(false);
-    const [noBalls, setNoBalls] = React.useState(false);
+    const [castrated, setCastrated] = React.useState(false);
     const [sick, setSick] = React.useState(false);
 
     const [adoptionTerms, setAdoptionTerms] = React.useState(false);
@@ -52,14 +57,14 @@ const AnimalRegisterPage = () => {
     ]
 
     const sexGroup = [
-        {label: 'Macho', value:"boy"},
-        {label: 'Fêmea', value:"girl"}
+        {label: 'Macho', value:"male"},
+        {label: 'Fêmea', value:"female"}
     ]
 
     const sizeGroup = [
         {label: 'Pequeno', value:"small"},
         {label: 'Médio', value:"medium"},
-        {label: 'Grande', value:"big"}
+        {label: 'Grande', value:"large"}
     ]
 
     const ageGroup = [
@@ -80,13 +85,104 @@ const AnimalRegisterPage = () => {
     const healthGroup = [
         {label: 'Vacinado', state: vaccinated, setter: setVaccinated},
         {label: 'Vermifugado', state: verms, setter: setVerms},
-        {label: 'Castrado', state: noBalls, setter: setNoBalls},
+        {label: 'Castrado', state: castrated, setter: setCastrated},
         {label: 'Doente', state: sick, setter: setSick}
     ]
+
+    const[illnesses, setIllnesses] = React.useState("")
+    const[medicineName, setMedicineName] = React.useState("")
+    const[objectsDesc, setObjectsDesc] = React.useState("")
+    const[about, setAbout] = React.useState("")
 
     const [helpBtn, setHelpBtn] = React.useState(false);
     const [careBtn, setCareBtn] = React.useState(false);
     const [adoptioBtn, setAdoptionBtn] = React.useState(false);
+
+    async function handleAnimalRegister() {
+        if (name == "") {
+            Alert.alert("O campo de nome é obrigatório para cadastro")
+            return
+        }
+        if (age == "") {
+            Alert.alert("O campo de idade é obrigatório para cadastro")
+            return
+        }
+        if (sex == "") {
+            Alert.alert("O campo de sexo é obrigatório para cadastro")
+            return
+        }
+        if (size == "") {
+            Alert.alert("O campo de tamanho é obrigatório para cadastro")
+            return
+        }
+        if (species == "") {
+            Alert.alert("O campo de espécie é obrigatório para cadastro")
+            return
+        }
+
+        try {
+            await addDoc(collection(database, "pets"), {
+                name: name,
+                age: age,
+                sex: sex,
+                size: size,
+                specie: species,
+                temper: {
+                    calm: calm, 
+                    guard: guard, 
+                    lazy: lazy, 
+                    loving: loving, 
+                    playful: playful, 
+                    timid: timid
+                },   
+                health: {
+                    vaccinated: vaccinated,
+                    verms: verms,
+                    castrated: castrated,
+                    sick: sick,
+                    illnesses: illnesses
+                },
+                adoption: adoptioBtn,
+                adoptionOptions: {
+                    adoptionTerms: adoptionTerms,
+                    housePhotos: housePhotos,
+                    visit: visit,
+                    postAdoption: postAdoption,
+                    postAdoptionOptions: {
+                        oneMonth: oneMonth,
+                        threeMonths: threeMonths,
+                        sixMonths: sixMonths
+                    }    
+                },
+                sponsorship: careBtn,
+                sponsorshipOptions: {
+                    sponsorshipTerm: careTerms,
+                    animalVisit: animalVisits,
+                    financeHelp: financeHelp,
+                    financeHelpOptions: {
+                        food: foodHelp,
+                        health: healthHelp,
+                        objects: objectHelp
+                    }
+                },
+                help: helpBtn,
+                helpOptions: {
+                    food: food,
+                    finance: finance,
+                    medicine: medicine,
+                    medicineDescription: medicineName,
+                    objects: objects,
+                    objectsDescription: objectsDesc
+                },
+                aboutAnimal: about
+            })
+            Alert.alert("Animal cadastrado com sucesso!")
+            navigation.navigate('Página Inicial')
+        }
+        catch {
+        Alert.alert("Ocorreu um erro, tente novamente")
+        }
+    }
 
     return( 
         <ScrollArea>
@@ -114,7 +210,7 @@ const AnimalRegisterPage = () => {
 
             <FieldText>NOME DO ANIMAL</FieldText>
             <InputArea>
-                <Input placeholder="Nome do animal"></Input>
+                <Input placeholder="Nome do Animal" value={name} onChangeText={(e) => {setName(e)}}></Input>
             </InputArea>
 
             <FieldText>FOTOS DO ANIMAL</FieldText>
@@ -146,7 +242,7 @@ const AnimalRegisterPage = () => {
                 <ChecklistGroup groupName="Saúde" values={healthGroup} />
                 {sick? 
                 <InputArea>
-                    <Input placeholder="Doenças do animal"></Input>
+                    <Input placeholder="Doenças do animal" value={illnesses} onChangeText={(e) => {setIllnesses(e)}}></Input>
                 </InputArea>
                 :
                 <></>
@@ -206,7 +302,7 @@ const AnimalRegisterPage = () => {
             <Checklist label="Medicamento" state={medicine} setter={setMedicine} />
             {medicine?
             <InputArea>
-                <Input placeholder="Nome do medicamento"></Input>
+                <Input placeholder="Nome do Medicamento" value={medicineName} onChangeText={(e) => {setMedicineName(e)}}></Input>
             </InputArea>
             :
             <></>
@@ -214,7 +310,7 @@ const AnimalRegisterPage = () => {
             <Checklist label="Objetos" state={objects} setter={setObjects} />
             {objects?
             <InputArea>
-                <Input placeholder="Especifique o(s) objeto(s)"></Input>
+                <Input placeholder="Especifique o(s) objeto(s)" value={objectsDesc} onChangeText={(e) => {setObjectsDesc(e)}}></Input>
             </InputArea>
             :
             <></>
@@ -227,10 +323,10 @@ const AnimalRegisterPage = () => {
 
             <FieldText>SOBRE O ANIMAL</FieldText>
             <InputArea>
-                <Input placeholder="Compartilhe a história do animal"></Input>
+                <Input placeholder="Compartilhe a história do animal" value={about} onChangeText={(e) => {setAbout(e)}}></Input>
             </InputArea>
             <FinishButton>
-                <Button>{adoptioBtn? 'COLOCAR PARA ADOÇÃO' : careBtn? 'PROCURAR PADRINHO' : 'PROCURAR AJUDA'}</Button>
+                <Button onPress={handleAnimalRegister}>{adoptioBtn? 'COLOCAR PARA ADOÇÃO' : careBtn? 'PROCURAR PADRINHO' : 'PROCURAR AJUDA'}</Button>
             </FinishButton>
 
             </>
