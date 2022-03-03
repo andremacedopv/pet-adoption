@@ -88,6 +88,7 @@ const AnimalRegisterPage = ({navigation}) => {
         {label: 'Castrado', state: noBalls, setter: setNoBalls},
         {label: 'Doente', state: sick, setter: setSick}
     ]
+    const[illnesses, setIllnesses] = React.useState("")
 
     const [helpBtn, setHelpBtn] = React.useState(false);
     const [careBtn, setCareBtn] = React.useState(false);
@@ -99,10 +100,37 @@ const AnimalRegisterPage = ({navigation}) => {
             age: age,
             sex: sex,
             size: size,
-            specie: species   
+            specie: species,
+            temper: {
+                calm: calm, 
+                guard: guard, 
+                lazy: lazy, 
+                loving: loving, 
+                playful: playful, 
+                timid: timid
+            },   
+            health: {
+                vaccinated: vaccinated,
+                verms: verms,
+                noBalls: noBalls,
+                sick: sick,
+                illnesses: illnesses
+            },
+            // adoption: adoptioBtn,
+            // adoptionOptions: {
+            //     adoptionTerms: adoptionTerms,
+            //     housePhotos: housePhotos,
+            //     visit: visit,
+            //     postAdoption: postAdoption,
+            //     postAdoptionOptions: {
+            //         oneMonth: oneMonth,
+            //         threeMonths: threeMonths,
+            //         sixMonths: sixMonths
+            //     }    
+            // },
         })
         Alert.alert("Animal cadastrado com sucesso!")
-        navigation.navigate('Ops')
+        navigation.navigate('Página Inicial')
     }
 
     return( 
@@ -163,7 +191,7 @@ const AnimalRegisterPage = ({navigation}) => {
                 <ChecklistGroup groupName="Saúde" values={healthGroup} />
                 {sick? 
                 <InputArea>
-                    <Input placeholder="Doenças do animal"></Input>
+                    <Input placeholder="Doenças do animal" value={illnesses} onChangeText={(e) => {setIllnesses(e)}}></Input>
                 </InputArea>
                 :
                 <></>
