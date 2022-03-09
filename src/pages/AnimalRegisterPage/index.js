@@ -10,8 +10,11 @@ import Button from '../../components/Button';
 import { collection, addDoc } from "firebase/firestore";
 import { Alert } from 'react-native';
 import { database } from "../../services/firebase"
+import { useUserContext } from "../../contexts/useUserContext";
 
 const AnimalRegisterPage = ({navigation}) => {
+
+    const { userData } = useUserContext();
     
     const [name, setName] = useState("")
     const [species, setSpecies] = React.useState('');
@@ -122,6 +125,7 @@ const AnimalRegisterPage = ({navigation}) => {
 
         try {
             await addDoc(collection(database, "pets"), {
+                creator_uid: userData.uid,
                 name: name,
                 age: age,
                 sex: sex,
