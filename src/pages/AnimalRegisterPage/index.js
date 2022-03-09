@@ -8,8 +8,10 @@ import Input from '../../components/Input';
 import SelectButton from '../../components/SelectButton';
 import Button from '../../components/Button';
 import { collection, addDoc } from "firebase/firestore";
+import { uploadBytes, ref } from "firebase/storage";
 import { Alert } from 'react-native';
-import { database } from "../../services/firebase"
+import { database, storage } from "../../services/firebase"
+import * as ImagePicker from 'expo-image-picker';
 
 const AnimalRegisterPage = ({navigation}) => {
     
@@ -50,6 +52,8 @@ const AnimalRegisterPage = ({navigation}) => {
     const [finance, setFinance] = React.useState(false);
     const [medicine, setMedicine] = React.useState(false);
     const [objects, setObjects] = React.useState(false);
+
+    const [image, setImage] = React.useState(null);
 
     const speciesGroup = [
         {label: 'Cachorro', value:"dog"},
@@ -98,6 +102,40 @@ const AnimalRegisterPage = ({navigation}) => {
     const [careBtn, setCareBtn] = React.useState(false);
     const [adoptioBtn, setAdoptionBtn] = React.useState(false);
 
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [3, 3],
+            quality: 1,
+        });
+    
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    };
+
+    const uploadImage = async () => {
+        const blob = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = function () {
+            resolve(xhr.response);
+          };
+          xhr.onerror = function (e) {
+            console.log(e);
+            reject(new TypeError("Network request failed"));
+          };
+          xhr.responseType = "blob";
+          xhr.open("GET", image, true);
+          xhr.send(null);
+        });
+    
+        const storageRef = ref(storage, `pets/${new Date().toISOString()}`);
+        let snapshot = await uploadBytes(storageRef, blob)
+        return(snapshot.metadata.fullPath);
+      };
+    
+
     async function handleAnimalRegister() {
         if (name == "") {
             Alert.alert("O campo de nome é obrigatório para cadastro")
@@ -121,12 +159,14 @@ const AnimalRegisterPage = ({navigation}) => {
         }
 
         try {
+            let imagePath = await uploadImage();
             await addDoc(collection(database, "pets"), {
                 name: name,
                 age: age,
                 sex: sex,
                 size: size,
                 specie: species,
+                imagePath: imagePath,
                 temper: {
                     calm: calm, 
                     guard: guard, 
@@ -215,7 +255,12 @@ const AnimalRegisterPage = ({navigation}) => {
 
             <FieldText>FOTOS DO ANIMAL</FieldText>
             <InputArea>
-                <InputImage size="large"/>
+                {
+                    image == null ?
+                    <InputImage onPress={pickImage} size="large"/>
+                    :
+                    <InputImage onPress={pickImage} imageSent={true} size="large"/>
+                }
             </InputArea>
             
             <FieldArea>

@@ -32,7 +32,7 @@ const RegisterPage = ({navigation}) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 3],
       quality: 1,
     });
 
@@ -74,7 +74,7 @@ const RegisterPage = ({navigation}) => {
       phone: phone,
       username: username
     })
-  }
+  };
 
   async function handleCreateUser() {
 
@@ -98,7 +98,7 @@ const RegisterPage = ({navigation}) => {
       Alert.alert("Ocorreu um erro, tente novamente")
     }
     
-  }
+  };
 
   return(
     <ScrollView>
