@@ -12,6 +12,11 @@ const UserProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [userData, setUserData] = useState(null)
 
+    const logout = async () => {
+        setUser(null)
+        setUserData(null)
+    }
+
     const login = async ({email, password, navigation}) => {
         // Login into user account
         const auth = getAuth();
@@ -50,7 +55,7 @@ const UserProvider = ({children}) => {
     }
 
     return (
-        <UserContext.Provider value={{user, userData, login}}>
+        <UserContext.Provider value={{user, userData, login, logout}}>
             {children}
         </UserContext.Provider>
     )

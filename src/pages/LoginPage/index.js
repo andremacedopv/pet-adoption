@@ -3,7 +3,6 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { Container, InputArea, ButtonArea, SocialArea } from './styles';
 import { Entypo } from '@expo/vector-icons';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Alert } from "react-native";
 import { useUserContext } from "../../contexts/useUserContext";
 
