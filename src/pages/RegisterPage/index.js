@@ -5,10 +5,11 @@ import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
 import { ScrollView, Alert, Image } from 'react-native';
 import { collection, addDoc } from "firebase/firestore";
+import { uploadBytes, ref } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 import * as ImagePicker from 'expo-image-picker';
 
-import { database } from "../../services/firebase"
+import { database, storage } from "../../services/firebase"
 
 const RegisterPage = ({navigation}) => {
 
@@ -35,12 +36,32 @@ const RegisterPage = ({navigation}) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
   };
+
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
+
+    const storageRef = ref(storage, `users/${new Date().toISOString()}`);
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      return(snapshot.metadata.fullPath);
+    });
+  }
+
 
   async function handleCreateUser() {
 
@@ -52,8 +73,13 @@ const RegisterPage = ({navigation}) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password)
       .then(registeredUser => {
+        let imagePath = uploadImage()
+        return ({imagePath, registeredUser})
+      })
+      .then(({imagePath, registeredUser}) => {
         addDoc(collection(database, "users"), {
           uid: registeredUser.user.uid,
+          // imagePath: imagePath,
           name: name,
           age: age,
           email: email,
@@ -67,7 +93,8 @@ const RegisterPage = ({navigation}) => {
         navigation.navigate('Login')
       })
     }
-    catch {
+    catch (e) {
+      console.log(e)
       Alert.alert("Ocorreu um erro, tente novamente")
     }
     

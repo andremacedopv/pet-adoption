@@ -2,8 +2,8 @@
 //import { initializeApp, database } from "firebase/app";
 import firebase from 'firebase/compat/app';
 //import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/database';
+import 'firebase/firestore';
+import 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,5 +30,6 @@ if (firebase.apps.length === 0) {
 }
 
 var database = firebase.firestore();
+var storage = firebase.storage();
 
-export {firebase, database}
+export {firebase, database, storage}
