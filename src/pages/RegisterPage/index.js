@@ -3,9 +3,10 @@ import { Container, Header, ButtonArea, InputArea, Info} from './styles';
 import Button from "../../components/Button";
 import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
-import { ScrollView, Alert } from 'react-native';
+import { ScrollView, Alert, Image } from 'react-native';
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import * as ImagePicker from 'expo-image-picker';
 
 import { database } from "../../services/firebase"
 
@@ -23,6 +24,23 @@ const RegisterPage = ({navigation}) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   async function handleCreateUser() {
 
@@ -79,7 +97,7 @@ const RegisterPage = ({navigation}) => {
         <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
-        <InputImage/>
+        <InputImage onPress={pickImage}/>
         
         <ButtonArea>
           <Button onPress={handleCreateUser}> 
