@@ -76,7 +76,6 @@ const RegisterPage = ({navigation}) => {
     })
   }
 
-
   async function handleCreateUser() {
 
     if (password != passwordConfirmation) {
@@ -125,7 +124,12 @@ const RegisterPage = ({navigation}) => {
         <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
-        <InputImage onPress={pickImage}/>
+        {
+          image == null?
+          <InputImage onPress={pickImage}/>
+          :
+          <InputImage onPress={pickImage} imageSent={true}/>
+        }
         
         <ButtonArea>
           <Button onPress={handleCreateUser}> 
