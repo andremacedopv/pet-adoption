@@ -57,9 +57,23 @@ const RegisterPage = ({navigation}) => {
     });
 
     const storageRef = ref(storage, `users/${new Date().toISOString()}`);
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      return(snapshot.metadata.fullPath);
-    });
+    let snapshot = await uploadBytes(storageRef, blob)
+    return(snapshot.metadata.fullPath);
+  };
+
+  const createUserInFirestore = async (registeredUser, imagePath) => {
+    await addDoc(collection(database, "users"), {
+      uid: registeredUser.user.uid,
+      imagePath: imagePath,
+      name: name,
+      age: age,
+      email: email,
+      state: state,
+      city: city,
+      address: address,
+      phone: phone,
+      username: username
+    })
   }
 
 
@@ -71,27 +85,14 @@ const RegisterPage = ({navigation}) => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      .then(registeredUser => {
-        let imagePath = uploadImage()
-        return ({imagePath, registeredUser})
-      })
-      .then(({imagePath, registeredUser}) => {
-        addDoc(collection(database, "users"), {
-          uid: registeredUser.user.uid,
-          // imagePath: imagePath,
-          name: name,
-          age: age,
-          email: email,
-          state: state,
-          city: city,
-          address: address,
-          phone: phone,
-          username: username
-        })
-        Alert.alert("Usuário criado com sucesso!")
-        navigation.navigate('Login')
-      })
+      let registeredUser = await createUserWithEmailAndPassword(auth, email, password)
+      console.log("criei o usuario")
+      let imagePath = await uploadImage();
+      console.log(imagePath)
+      let userData = await createUserInFirestore(registeredUser, imagePath);
+      
+      Alert.alert("Usuário criado com sucesso!")
+      navigation.navigate('Login')
     }
     catch (e) {
       console.log(e)
