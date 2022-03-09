@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { Container, InputArea, ButtonArea, SocialArea } from './styles';
+import { Container, InputArea, ButtonArea, SocialArea, RegisterArea, RegisterText } from './styles';
 import { Entypo } from '@expo/vector-icons';
 import { Alert } from "react-native";
 import { useUserContext } from "../../contexts/useUserContext";
@@ -47,6 +47,10 @@ const LoginPage = ({navigation}) => {
           ENTRAR COM GOOGLE
         </Button>
       </SocialArea>
+      <RegisterArea>
+        <RegisterText>Não tem conta?</RegisterText>
+        <Button onPress={() => navigation.navigate('SignUp')}> Fazer Cadastro</Button>
+      </RegisterArea>
     </Container>
   )};
 
