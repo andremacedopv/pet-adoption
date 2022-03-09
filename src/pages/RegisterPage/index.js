@@ -85,10 +85,15 @@ const RegisterPage = ({navigation}) => {
 
     try {
       let registeredUser = await createUserWithEmailAndPassword(auth, email, password)
-      console.log("criei o usuario")
-      let imagePath = await uploadImage();
-      console.log(imagePath)
-      let userData = await createUserInFirestore(registeredUser, imagePath);
+      let imagePath
+      if (image == null) {
+        imagePath = ""
+      }
+      else {
+        imagePath = await uploadImage();
+      }
+      
+      await createUserInFirestore(registeredUser, imagePath);
       
       Alert.alert("Usuário criado com sucesso!")
       navigation.navigate('Login')

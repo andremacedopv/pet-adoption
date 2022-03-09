@@ -159,7 +159,13 @@ const AnimalRegisterPage = ({navigation}) => {
         }
 
         try {
-            let imagePath = await uploadImage();
+            let imagePath;
+            if (image == null) {
+                imagePath = ""
+              }
+              else {
+                imagePath = await uploadImage();
+              }
             await addDoc(collection(database, "pets"), {
                 name: name,
                 age: age,
