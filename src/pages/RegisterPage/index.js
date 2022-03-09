@@ -3,11 +3,13 @@ import { Container, Header, ButtonArea, InputArea, Info} from './styles';
 import Button from "../../components/Button";
 import Input from '../../components/Input';
 import InputImage from '../../components/InputImage';
-import { ScrollView, Alert } from 'react-native';
+import { ScrollView, Alert, Image } from 'react-native';
 import { collection, addDoc } from "firebase/firestore";
+import { uploadBytes, ref } from "firebase/storage";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import * as ImagePicker from 'expo-image-picker';
 
-import { database } from "../../services/firebase"
+import { database, storage } from "../../services/firebase"
 
 const RegisterPage = ({navigation}) => {
 
@@ -23,6 +25,56 @@ const RegisterPage = ({navigation}) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  const uploadImage = async () => {
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function (e) {
+        console.log(e);
+        reject(new TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", image, true);
+      xhr.send(null);
+    });
+
+    const storageRef = ref(storage, `users/${new Date().toISOString()}`);
+    let snapshot = await uploadBytes(storageRef, blob)
+    return(snapshot.metadata.fullPath);
+  };
+
+  const createUserInFirestore = async (registeredUser, imagePath) => {
+    await addDoc(collection(database, "users"), {
+      uid: registeredUser.user.uid,
+      imagePath: imagePath,
+      name: name,
+      age: age,
+      email: email,
+      state: state,
+      city: city,
+      address: address,
+      phone: phone,
+      username: username
+    })
+  };
 
   async function handleCreateUser() {
 
@@ -32,28 +84,26 @@ const RegisterPage = ({navigation}) => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      .then(registeredUser => {
-        addDoc(collection(database, "users"), {
-          uid: registeredUser.user.uid,
-          name: name,
-          age: age,
-          email: email,
-          state: state,
-          city: city,
-          address: address,
-          phone: phone,
-          username: username
-        })
-        Alert.alert("Usuário criado com sucesso!")
-        navigation.navigate('Login')
-      })
+      let registeredUser = await createUserWithEmailAndPassword(auth, email, password)
+      let imagePath
+      if (image == null) {
+        imagePath = ""
+      }
+      else {
+        imagePath = await uploadImage();
+      }
+      
+      await createUserInFirestore(registeredUser, imagePath);
+      
+      Alert.alert("Usuário criado com sucesso!")
+      navigation.navigate('Login')
     }
-    catch {
+    catch (e) {
+      console.log(e)
       Alert.alert("Ocorreu um erro, tente novamente")
     }
     
-  }
+  };
 
   return(
     <ScrollView>
@@ -79,7 +129,12 @@ const RegisterPage = ({navigation}) => {
         <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
-        <InputImage/>
+        {
+          image == null?
+          <InputImage onPress={pickImage}/>
+          :
+          <InputImage onPress={pickImage} imageSent={true}/>
+        }
         
         <ButtonArea>
           <Button onPress={handleCreateUser}> 
