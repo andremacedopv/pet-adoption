@@ -31,27 +31,32 @@ const UserProvider = ({children}) => {
         });
 
         // Get user info
-        try{
-            var usersRef = collection(database, "users");
-            const q = query(usersRef, where("uid", "==", user.uid))
-            const querySnapshot = await getDocs(q);
-            var document = querySnapshot.docs[0].data()
-            document.id = querySnapshot.docs[0].id
-            setUserData(document)
-            Alert.alert(
-                null,
-                "Login feito com sucesso",
-                [
-                  {
-                    text: "Ok",
-                    onPress: () => navigation.navigate("Página Inicial"),
-                  },
-                ]
-            );
-        } catch (e) {
-            setUser(null);
-            Alert.alert("Algum problema aconteceu. Não conseguimos fazer seu login.")
+        if(user){
+            try{
+                var usersRef = collection(database, "users");
+                const q = query(usersRef, where("uid", "==", user.uid))
+                const querySnapshot = await getDocs(q);
+                var document = querySnapshot.docs[0].data()
+                document.id = querySnapshot.docs[0].id
+                setUserData(document)
+                Alert.alert(
+                    null,
+                    "Login feito com sucesso",
+                    [
+                    {
+                        text: "Ok",
+                        onPress: () => navigation.navigate("Página Inicial"),
+                    },
+                    ]
+                );
+            } catch (e) {
+                setUser(null);
+                Alert.alert("Algum problema aconteceu. Não conseguimos fazer seu login.")
+            }
         }
+        console.log(user)
+        console.log("-----------------------------------")
+        console.log(userData)
     }
 
     return (
