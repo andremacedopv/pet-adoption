@@ -14,100 +14,56 @@ const Stack = createNativeStackNavigator();
 const Routes = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#cfe9e5',
+                },
+                headerTintColor: '#434343',
+                headerTitleStyle: {
+                fontWeight: 'bold',
+                },
+                headerLeft: () => (
+                    <MenuButton>
+                        <Ionicons name="md-menu" size={30} color="#595959" />
+                    </MenuButton>
+                )
+            }}
+        >
             <Stack.Screen
-                    name="Página Inicial"
-                    component={InitialPage}
-                    options={{
-                        title: "",
-                        headerStyle: {
-                            backgroundColor: '#cfe9e5',
-                        },
-                        headerTintColor: '#434343',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerLeft: () => (
-                            <MenuButton>
-                                <Ionicons name="md-menu" size={30} color="#595959" />
-                            </MenuButton>
-                        )
-                    }}
+                name="Página Inicial"
+                component={InitialPage}
+                options={{
+                    title: "",
+                }}
             />            
             <Stack.Screen
-                    name="SignUp"
-                    component={RegisterPage}
-                    options={{
-                        title: "Cadastro Pessoal",
-                        headerStyle: {
-                            backgroundColor: '#cfe9e5',
-                        },
-                        headerTintColor: '#434343',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerLeft: () => (
-                            <MenuButton>
-                                <Ionicons name="md-menu" size={30} color="#595959" />
-                            </MenuButton>
-                        )
-                    }}
-            />
-                <Stack.Screen
-                    name="Login"
-                    component={LoginPage}
-                    
-                    options={{
-                        headerStyle: {
-                            backgroundColor: '#cfe9e5',
-                        },
-                        headerTintColor: '#434343',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerLeft: () => (
-                            <MenuButton>
-                                <Ionicons name="md-menu" size={30} color="#595959" />
-                            </MenuButton>
-                        )
-                    }}
-            />
-              <Stack.Screen
-                name="Cadastro do Animal"
-                component={AnimalRegisterPage}
+                name="SignUp"
+                component={RegisterPage}
                 options={{
-                    headerStyle: {
-                        backgroundColor: '#cfe9e5',
-                    },
-                    headerTintColor: '#434343',
-                    headerTitleStyle: {
-                      fontWeight: 'bold',
-                    },
-                    headerLeft: () => (
-                        <MenuButton>
-                            <Ionicons name="md-menu" size={30} color="#595959" />
-                        </MenuButton>
-                    )
+                    title: "Cadastro Pessoal"
                 }}
             />
             <Stack.Screen
-                    name="Ops"
-                    component={RegisterPageOps}
-                    options={{
-                        title: "Cadastrar",
-                        headerStyle: {
-                            backgroundColor: '#cfe9e5',
-                        },
-                        headerTintColor: '#434343',
-                        headerTitleStyle: {
-                        fontWeight: 'bold',
-                        },
-                        headerLeft: () => (
-                            <MenuButton>
-                                <Ionicons name="md-menu" size={30} color="#595959" />
-                            </MenuButton>
-                        )
-                    }}
+                name="Login"
+                component={LoginPage}    
+                options={{
+                    title: "Login"
+                }}
+            />
+            <Stack.Screen
+                name="Cadastro do Animal"
+                component={AnimalRegisterPage}
+                options={{
+                    title: "Cadastro do Animal"
+                }}
+            />
+            <Stack.Screen
+                name="Ops"
+                component={RegisterPageOps}
+                options={{
+                    title: ""
+                }}
             />
         </Stack.Navigator>
     </NavigationContainer>
