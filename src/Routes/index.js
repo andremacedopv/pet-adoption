@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MenuButton } from './styles';
 import { Ionicons } from '@expo/vector-icons'; 
 import LoginPage from '../pages/LoginPage';
+import IndexAdoptPage from '../pages/IndexAdoptPage';
 import RegisterPage from '../pages/RegisterPage';
 import RegisterPageOps from '../pages/RegisterPageOps';
 import InitialPage from '../pages/InitialPage';
@@ -15,6 +16,25 @@ const Routes = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
+        <Stack.Screen
+                    name="Página Adoção"
+                    component={IndexAdoptPage}
+                    options={{
+                        title: "",
+                        headerStyle: {
+                            backgroundColor: '#cfe9e5',
+                        },
+                        headerTintColor: '#434343',
+                        headerTitleStyle: {
+                        fontWeight: 'bold',
+                        },
+                        headerLeft: () => (
+                            <MenuButton>
+                                <Ionicons name="md-menu" size={30} color="#595959" />
+                            </MenuButton>
+                        )
+                    }}
+            />         
             <Stack.Screen
                     name="Página Inicial"
                     component={InitialPage}
