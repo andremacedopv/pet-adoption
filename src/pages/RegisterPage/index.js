@@ -125,8 +125,8 @@ const RegisterPage = ({navigation}) => {
         
         <Header> INFORMAÇÕES DE PERFIL </Header>
         <InputArea><Input placeholder="Nome de usuário" value={username} onChangeText={(e) => {setUsername(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}} secureTextEntry={true}></Input></InputArea>
+        <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}} secureTextEntry={true}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
         {
