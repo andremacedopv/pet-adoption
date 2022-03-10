@@ -18,45 +18,40 @@ const UserProvider = ({children}) => {
     }
 
     const login = async ({email, password, navigation}) => {
-        // Login into user account
         const auth = getAuth();
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             setUser(userCredential.user);
-        })
-        .catch((error) => {
-            Alert.alert("Ops, algo de errado aconteceu. Certifique-se se suas credenciais estão corretas.")
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-
-        // Get user info
-        if(user){
-            try{
-                var usersRef = collection(database, "users");
-                const q = query(usersRef, where("uid", "==", user.uid))
-                const querySnapshot = await getDocs(q);
-                var document = querySnapshot.docs[0].data()
-                document.id = querySnapshot.docs[0].id
-                setUserData(document)
-                Alert.alert(
-                    null,
-                    "Login feito com sucesso",
-                    [
+            return userCredential.user.uid
+        }).then((uid) => {
+            var usersRef = collection(database, "users");
+            const q = query(usersRef, where("uid", "==", uid))
+            return q;
+        }).then((q) => {
+            const querySnapshot = getDocs(q);
+            return querySnapshot;
+        }).then((querySnapshot) => {
+            var document = querySnapshot.docs[0].data()
+            document.id = querySnapshot.docs[0].id
+            setUserData(document)
+            Alert.alert(
+                null,
+                "Login feito com sucesso",
+                [
                     {
                         text: "Ok",
                         onPress: () => navigation.navigate("Página Inicial"),
                     },
-                    ]
-                );
-            } catch (e) {
-                setUser(null);
-                Alert.alert("Algum problema aconteceu. Não conseguimos fazer seu login.")
-            }
-        }
-        console.log(user)
-        console.log("-----------------------------------")
-        console.log(userData)
+                ]
+            );
+        })
+        .catch((error) => {
+            Alert.alert("Ops, algo de errado aconteceu. Certifique-se se suas credenciais estão corretas.")
+            setUser(null);
+            setUserData(null);
+            const errorCode = error.code;
+            const errorMessage = error.message;
+        });
     }
 
     return (
