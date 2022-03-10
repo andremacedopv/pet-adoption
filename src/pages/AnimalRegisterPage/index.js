@@ -10,10 +10,13 @@ import Button from '../../components/Button';
 import { collection, addDoc } from "firebase/firestore";
 import { uploadBytes, ref } from "firebase/storage";
 import { Alert } from 'react-native';
+import { useUserContext } from "../../contexts/useUserContext";
 import { database, storage } from "../../services/firebase"
 import * as ImagePicker from 'expo-image-picker';
 
 const AnimalRegisterPage = ({navigation}) => {
+
+    const { userData } = useUserContext();
     
     const [name, setName] = useState("")
     const [species, setSpecies] = React.useState('');
@@ -167,6 +170,7 @@ const AnimalRegisterPage = ({navigation}) => {
                 imagePath = await uploadImage();
               }
             await addDoc(collection(database, "pets"), {
+                creator_uid: userData.uid,
                 name: name,
                 age: age,
                 sex: sex,

@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { Container, InputArea, ButtonArea, SocialArea } from './styles';
+import { Container, InputArea, ButtonArea, SocialArea, RegisterArea, RegisterText } from './styles';
 import { Entypo } from '@expo/vector-icons';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Alert } from "react-native";
+import { useUserContext } from "../../contexts/useUserContext";
 
-const LoginPage = () => {
+const LoginPage = ({navigation}) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleUserLogin() {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      Alert.alert("Login feito com sucesso!")
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    Alert.alert("Opa, algo de errado aconteceu!")
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
+  const {login} = useUserContext();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if(email === ''){
+      Alert.alert("Por favor, insira um e-mail")
+    } else if(password === ''){
+      Alert.alert("Por favor, insira uma senha")
+    }
+
+    await login({email, password, navigation})
   }
 
   return( 
@@ -34,7 +31,7 @@ const LoginPage = () => {
         <Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}} secureTextEntry={true}></Input>
       </InputArea>
       <ButtonArea>
-        <Button onPress={handleUserLogin}> ENTRAR</Button>
+        <Button onPress={handleSubmit}> ENTRAR</Button>
       </ButtonArea>
       <SocialArea>
         <Button 
@@ -50,6 +47,10 @@ const LoginPage = () => {
           ENTRAR COM GOOGLE
         </Button>
       </SocialArea>
+      <RegisterArea>
+        <RegisterText>Não tem conta?</RegisterText>
+        <Button onPress={() => navigation.navigate('SignUp')}> Fazer Cadastro</Button>
+      </RegisterArea>
     </Container>
   )};
 

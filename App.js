@@ -1,8 +1,12 @@
 import React from 'react';
 import Routes from './src/Routes';
+import UserProvider from "./src/contexts/useUserContext";
 
 export default function App() {
   return (
-    <Routes></Routes>
+    <UserProvider>
+      <Routes>
+      </Routes>
+    </UserProvider>
   );
 }

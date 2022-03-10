@@ -16,11 +16,22 @@ export const InputArea = styled.View`
 
 export const ButtonArea = styled.View`
     width: 70%;
-    margin-bottom: 25%;
+    margin-bottom: 8%;
 `;
 
 export const SocialArea = styled.View`
     width: 70%;
     justify-content: space-around;
     height: 18%;
+    margin-bottom: 8%;
+`;
+
+export const RegisterArea = styled.View`
+    width: 70%;
+    justify-content: space-around;
+    height: 13%;
+`;
+
+export const RegisterText = styled.Text`
+    text-align: center;    
 `;
