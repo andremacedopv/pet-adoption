@@ -19,7 +19,7 @@ export const TextInfo = styled.Text`
   text-align: center;
   margin: 52px 0 16px;
   color: #757575;
-  font-family: 'Roboto';
+  font-family: 'Roboto_400Regular';
 `
 
 export const TextArea = styled.View`
