@@ -27,8 +27,8 @@ const LoginPage = ({navigation}) => {
   return( 
     <Container>
       <InputArea>
-        <Input placeholder="Email" value={email} onChangeText={(e) => {setEmail(e)}}></Input>
-        <Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}} secureTextEntry={true}></Input>
+        <Input placeholder="Email" value={email} keyboardType={"email-address"} autoCapitalize={'none'} autoCorrect={false} onChangeText={(e) => {setEmail(e)}}></Input>
+        <Input placeholder="Senha" value={password} autoCapitalize={'none'} autoCorrect={false} onChangeText={(e) => {setPassword(e)}} secureTextEntry={true}></Input>
       </InputArea>
       <ButtonArea>
         <Button onPress={handleSubmit}> ENTRAR</Button>
