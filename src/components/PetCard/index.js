@@ -4,9 +4,6 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 import {TitleArea, ImageArea, Container, DescriptionArea, LineDescription} from './styles';
 import { FontAwesome } from '@expo/vector-icons';
 
-import image from '../../../assets/gato-feio-3.jpeg'
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
-// const image = { uri: "https://reactjs.org/logo-og.png" };
 
 const PetCard = ({name, sex, age, size, city, state, photo}) => {
   return (

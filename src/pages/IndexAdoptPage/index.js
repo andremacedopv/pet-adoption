@@ -1,14 +1,55 @@
 import React from 'react';
 import PetCard from "../../components/PetCard";
-import { Container } from '../LoginPage/styles';
-import image from '../../../assets/gato-feio.jpg'
+import { ActivityIndicator,FlatList, View} from "react-native";
+import { database, storage } from "../../services/firebase"
+
+const petsImageURI = "gs://pet-adoption-1103.appspot.com/";
+
 
 const IndexAdoptPage = () => {
+    const [loading, setLoading] = React.useState(true); // Set loading to true on component mount
+    const [pets, setPets] = React.useState([]); // Initial empty array of users
+
+    React.useEffect(() => {
+        const subscriber = database
+          .collection('pets')
+          .onSnapshot(querySnapshot => {
+            const pets = [];
+      
+            querySnapshot.forEach(documentSnapshot => {
+              pets.push({
+                ...documentSnapshot.data(),
+                key: documentSnapshot.id,
+              });
+            });
+      
+            setPets(pets);
+            setLoading(false);
+          });
+      
+        // Unsubscribe from events when no longer in use
+        return () => subscriber();
+      }, []);
+      
+
+    if (loading) {
+      return <ActivityIndicator />;
+    }
+
     return (
-        <Container>
-            <PetCard name="Dogão" age="Velho" sex="Machão" size="Grandão" city="Brasilia" state="DF" photo={image}></PetCard>
-        </Container>
-    );
+        <FlatList
+            data={pets}
+            renderItem={({ item }) => (
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <PetCard name={item.name} age={item.age} sex={item.sex} 
+                    size={item.size} city={item.city} state={item.state} 
+                    photo={ {uri: petsImageURI + item.image}}></PetCard>  
+                </View>
+            )}
+        />
+
+      );
+ 
 };
 
 export default IndexAdoptPage;
