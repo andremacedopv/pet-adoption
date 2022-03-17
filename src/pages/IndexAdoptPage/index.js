@@ -4,9 +4,11 @@ import { ActivityIndicator,FlatList, View} from "react-native";
 import { database, storage } from "../../services/firebase"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-const IndexAdoptPage = () => {
+const IndexAdoptPage = ({ route, navigation }) => {
     const [loading, setLoading] = React.useState(true); // Set loading to true on component mount
     const [pets, setPets] = React.useState([]); // Initial empty array of users
+
+    const { getItens } = route.params;
 
     React.useEffect(() => {
         const subscriber = database
@@ -15,10 +17,33 @@ const IndexAdoptPage = () => {
             const pets = [];
       
             querySnapshot.forEach(documentSnapshot => {
-              pets.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-              });
+              if(getItens === 'adoption'){
+                if(documentSnapshot.data().adoption === true){
+                  pets.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                  });
+                }
+              } else if(getItens === 'help') {
+                if(documentSnapshot.data().help === true){
+                  pets.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                  });
+                }
+              } else if(getItens === 'sponsorship') {
+                if(documentSnapshot.data().sponsorship === true){
+                  pets.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                  });
+                }
+              } else {
+                  pets.push({
+                    ...documentSnapshot.data(),
+                    key: documentSnapshot.id,
+                  });
+              }
             });
       
             setPets(pets);

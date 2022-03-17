@@ -49,10 +49,10 @@ const InitialPage = ({navigation}) => {
             <TextInfo>Qual o seu interesse?</TextInfo>
         </TextArea>
         <ButtonArea>
-            <Button type="normal" onPress={() => navigation.navigate("Animais Disponíveis")}>ADOTAR</Button>
+            <Button type="normal" onPress={() => navigation.navigate("Animais Disponíveis", {getItens: 'adoption'})}>ADOTAR</Button>
         </ButtonArea>
         <ButtonArea>
-            <Button type="normal" onPress={() => navigation.navigate("Animais Disponíveis")}>AJUDAR</Button>
+            <Button type="normal" onPress={() => navigation.navigate("Animais Disponíveis", {getItens: 'help'})}>AJUDAR</Button>
         </ButtonArea>
         <ButtonArea>
           {
