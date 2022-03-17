@@ -171,6 +171,8 @@ const AnimalRegisterPage = ({navigation}) => {
               }
             await addDoc(collection(database, "pets"), {
                 creator_uid: userData.uid,
+                city: userData.city,
+                state: userData.state,
                 name: name,
                 age: age,
                 sex: sex,
