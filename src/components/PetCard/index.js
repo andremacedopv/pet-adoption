@@ -1,15 +1,34 @@
 import * as React from 'react';
 import { Title } from 'react-native-paper';
-import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import {TitleArea, ImageArea, Container, DescriptionArea, LineDescription} from './styles';
 import { FontAwesome } from '@expo/vector-icons';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import img from "../../assets/placeholder.jpg"
 
 
 const PetCard = ({name, sex, age, size, city, state, photo}) => {
+
+  const [uri, setUri] = React.useState()
+
   React.useEffect(() => {
-    console.log(photo)
-  }, [photo])
+    if(photo){
+    const storage = getStorage();
+      getDownloadURL(ref(storage,photo))
+        .then((url) => {
+          const src = {
+            uri: url,
+          }
+          setUri(src)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+    else {
+      setUri(img);
+    }
+  }, [photo]);
   
   const sexHash = {
     'female': 'Fêmea',
@@ -36,7 +55,7 @@ const PetCard = ({name, sex, age, size, city, state, photo}) => {
     </TitleArea>
     <ImageArea>
       <View style={styles.container}>
-        <Image source={photo} style={styles.image} />
+        <Image source={uri} resizeMode="cover" style={styles.image} />
       </View>
     </ImageArea>
     <DescriptionArea>
