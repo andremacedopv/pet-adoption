@@ -1,11 +1,29 @@
 import * as React from 'react';
 import { Title } from 'react-native-paper';
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
 import {TitleArea, ImageArea, Container, DescriptionArea, LineDescription} from './styles';
 import { FontAwesome } from '@expo/vector-icons';
 
 
 const PetCard = ({name, sex, age, size, city, state, photo}) => {
+  const sexHash = {
+    'female': 'Fêmea',
+    'male': 'Macho'
+  }
+
+  const ageHash = {
+    'young': 'Jovem',
+    'old': 'Velho',
+    'adult': 'Adulto'
+  }
+
+  const sizeHash = {
+    'small': 'Pequeno',
+    'big': 'Grande',
+    'medium': 'Médio'
+  }
+
+
   return (
   <Container>
     <TitleArea>
@@ -14,15 +32,14 @@ const PetCard = ({name, sex, age, size, city, state, photo}) => {
     </TitleArea>
     <ImageArea>
       <View style={styles.container}>
-        <ImageBackground source={undefined} resizeMode="cover" style={styles.image}>
-        </ImageBackground>
+        <Image source={photo} style={styles.image} />
       </View>
     </ImageArea>
     <DescriptionArea>
       <LineDescription>
-          <Text>{sex}</Text>
-          <Text>{age}</Text>
-          <Text>{size}</Text>
+          <Text>{sexHash[sex]}</Text>
+          <Text>{ageHash[age]}</Text>
+          <Text>{sizeHash[size]}</Text>
       </LineDescription>
       <LineDescription>
           <Text>{city} - {state}</Text>

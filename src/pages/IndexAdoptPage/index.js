@@ -24,6 +24,7 @@ const IndexAdoptPage = () => {
             });
       
             setPets(pets);
+            console.log(pets[1].image)
             setLoading(false);
           });
       
@@ -43,7 +44,7 @@ const IndexAdoptPage = () => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <PetCard name={item.name} age={item.age} sex={item.sex} 
                     size={item.size} city={item.city} state={item.state} 
-                    photo={ {uri: petsImageURI + item.image}}></PetCard>  
+                    photo={ {uri: petsImageURI + item.imagePath, }}></PetCard>  
                 </View>
             )}
         />
