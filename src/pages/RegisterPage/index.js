@@ -115,18 +115,18 @@ const RegisterPage = ({navigation}) => {
         </Info>
         
         <Header> INFORMAÇÕES PESSOAIS </Header>
-        <InputArea><Input placeholder="Nome Completo" value={name} onChangeText={(e) => {setName(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Idade" value={age} onChangeText={(e) => {setAge(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="E-mail" value={email} onChangeText={(e) => {setEmail(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Nome Completo" value={name} autoCapitalize={'words'} autoCorrect={false} onChangeText={(e) => {setName(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Idade" value={age} keyboardType={"number-pad"} onChangeText={(e) => {setAge(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="E-mail" value={email} keyboardType={"email-address"} autoCapitalize={'none'} autoCorrect={false} onChangeText={(e) => {setEmail(e)}}></Input></InputArea>
         <InputArea><Input placeholder="Estado" value={state} onChangeText={(e) => {setState(e)}}></Input></InputArea>
         <InputArea><Input placeholder="Cidade" value={city} onChangeText={(e) => {setCity(e)}}></Input></InputArea>
         <InputArea><Input placeholder="Endereço" value={address} onChangeText={(e) => {setAddress(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Telefone" value={phone} onChangeText={(e) => {setPhone(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Telefone" value={phone} keyboardType={"number-pad"} onChangeText={(e) => {setPhone(e)}}></Input></InputArea>
         
         <Header> INFORMAÇÕES DE PERFIL </Header>
-        <InputArea><Input placeholder="Nome de usuário" value={username} onChangeText={(e) => {setUsername(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Senha" value={password} onChangeText={(e) => {setPassword(e)}}></Input></InputArea>
-        <InputArea><Input placeholder="Confirmação de Senha" value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Nome de usuário" value={username} autoCapitalize={'none'} autoCorrect={false} onChangeText={(e) => {setUsername(e)}}></Input></InputArea>
+        <InputArea><Input placeholder="Senha" value={password} autoCapitalize={'none'} autoCorrect={false} onChangeText={(e) => {setPassword(e)}} secureTextEntry={true}></Input></InputArea>
+        <InputArea><Input placeholder="Confirmação de Senha" autoCapitalize={'none'} autoCorrect={false}value={passwordConfirmation} onChangeText={(e) => {setPasswordConfirmation(e)}} secureTextEntry={true}></Input></InputArea>
         
         <Header> FOTO DE PERFIL </Header>
         {

@@ -21,7 +21,7 @@ export const TextArea = styled.View`
 `;
 
 export const TextInfo = styled.Text`
-    font-family: 'Roboto';
+    font-family: 'Roboto_400Regular';
     font-size: 16px;
     color: #757575;
 `;
