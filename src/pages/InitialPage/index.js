@@ -55,8 +55,10 @@ const InitialPage = ({navigation}) => {
             <Button type="normal" onPress={() => navigation.navigate("Animais Disponíveis", {getItens: 'help'})}>AJUDAR</Button>
         </ButtonArea>
         <ButtonArea>
-          {
-            user && <Button type="normal" onPress={() => navigation.navigate("Meus Pets")}>MEUS PETS</Button>
+          {user? 
+            <Button type="normal" onPress={() => navigation.navigate("Meus Pets")}>MEUS PETS</Button>
+            :
+            <Button type="normal" onPress={() => navigation.navigate("Ops")}>MEUS PETS</Button>
           }
         </ButtonArea>
         <ButtonArea>
