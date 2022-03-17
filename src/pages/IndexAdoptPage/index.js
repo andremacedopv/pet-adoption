@@ -2,6 +2,7 @@ import React from 'react';
 import PetCard from "../../components/PetCard";
 import { ActivityIndicator,FlatList, View} from "react-native";
 import { database, storage } from "../../services/firebase"
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 const petsImageURI = "gs://pet-adoption-1103.appspot.com/";
 
@@ -31,6 +32,43 @@ const IndexAdoptPage = () => {
         // Unsubscribe from events when no longer in use
         return () => subscriber();
       }, []);
+
+      React.useEffect(() => {
+        const storage = getStorage();
+          getDownloadURL(ref(storage,'pets/2022-03-09T16:38:38.863Z'))
+            .then((url) => {
+              console.log(url)
+              const src = {
+                uri: url,
+              }
+              console.log(src);
+            })
+            .catch((e) => {
+              console.log(photoUrl);
+            })
+      })
+
+      const getPhotoUrl = async ({photoUrl}) => {
+        if(photoUrl){
+          const storage = getStorage();
+          getDownloadURL(ref(storage, photoUrl))
+            .then((url) => {
+              console.log(url)
+              const src = {
+                uri: url,
+              }
+              return src;
+            })
+            .catch((e) => {
+              console.log(photoUrl);
+            })
+        } else {
+          const src = {
+            uri: '',
+          }
+          return src;
+        }
+      }
       
 
     if (loading) {
@@ -44,7 +82,7 @@ const IndexAdoptPage = () => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <PetCard name={item.name} age={item.age} sex={item.sex} 
                     size={item.size} city={item.city} state={item.state} 
-                    photo={ {uri: petsImageURI + item.imagePath, }}></PetCard>  
+                    photo={() => {return getPhotoUrl(item.imagePath)}}></PetCard>  
                 </View>
             )}
         />
