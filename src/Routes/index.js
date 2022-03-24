@@ -34,19 +34,19 @@ const Routes = () => {
             }}
         >
             <Stack.Screen
-                name="Adotar"
-                component={AdoptAnimalPage}
-                options={{
-                    title: "",
-                }}
-            />  
-            <Stack.Screen
                 name="Página Inicial"
                 component={InitialPage}
                 options={{
                     title: "",
                 }}
             />            
+            <Stack.Screen
+                name="Adotar Animal"
+                component={AdoptAnimalPage}
+                options={{
+                    title: "Adotar Animal",
+                }}
+            />  
             <Stack.Screen
                 name="SignUp"
                 component={RegisterPage}

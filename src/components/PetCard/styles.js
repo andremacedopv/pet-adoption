@@ -18,7 +18,7 @@ export const TitleArea = styled.View`
     paddingHorizontal: 16px;
 `;
 
-export const ImageArea = styled.View`
+export const ImageArea = styled.TouchableOpacity`
     display: flex;
     height: 150;
 `;

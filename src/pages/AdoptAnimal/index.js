@@ -7,6 +7,7 @@ import { ScrollView, Alert} from 'react-native';
 import img from "../../assets/placeholder.jpg"
 
 const AdoptAnimalPage = () => {
+
   return(
     <ScrollView>
       <Container>
