@@ -1,18 +1,12 @@
 import React from 'react';
 import {
-    View,
-    Text,
     StyleSheet,
-    useWindowDimensions,
-    Button,
+    Image
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem, } from '@react-navigation/drawer';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MenuButton } from './styles';
-import { Ionicons, Feather } from '@expo/vector-icons'; 
+import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
+import { MenuButton, DrawerContainer, ProfileArea, ImageContainer, RoutesArea, LinkButton, LinkText, DivisionText } from './styles';
+import { Ionicons } from '@expo/vector-icons'; 
 import LoginPage from '../pages/LoginPage';
 import IndexAdoptPage from '../pages/IndexAdoptPage';
 import RegisterPage from '../pages/RegisterPage';
@@ -20,99 +14,114 @@ import RegisterPageOps from '../pages/RegisterPageOps';
 import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
-
-const Stack = createNativeStackNavigator()
+import { useUserContext } from "../contexts/useUserContext";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import profileImg from "../assets/profile.png";
 
 const Drawer = createDrawerNavigator();
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    icon: {
+        paddingRight: 5,
     },
-    menuContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-evenly',
+    image: {
+        height: 70,
+        width: 70,
+        borderRadius: 50,
     },
-    menuItemsCard: {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 10,
-    },
-    circleContainer: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      padding: 10,
-    },
-  });
+});
 
 function CustomDrawerContent(props) {
-    const width = useWindowDimensions().width * 0.3;
+
+    const [uri, setUri] = React.useState()
+    const {user, userData, logout} = useUserContext();
+
+    React.useEffect(() => {
+        if(userData?.imagePath){
+            const storage = getStorage();
+            getDownloadURL(ref(storage,userData.imagePath))
+                .then((url) => {
+                const src = {
+                    uri: url,
+                }
+                setUri(src)
+                })
+                .catch((e) => {
+                    setUri(profileImg)
+                    console.log(e)
+                })
+        }
+        else {
+            setUri(profileImg)
+        }
+    }, [userData]);
   
     return (
-      <DrawerContentScrollView {...props}>
-        <View style={styles.menuContainer}>
-          <View
-            style={[
-              styles.menuItemsCard,
-              { backgroundColor: '#fff2df', width: width, height: width },
-            ]}>
-            <>
-              <View
-                style={[styles.circleContainer, { backgroundColor: '#FFC56F' }]}>
-                <Feather travel name="briefcase" size={25} color="#fbae41" />
-                <DrawerItem
-                  label="Screen1"
-                  labelStyle={{ color: '#fbae41', fontSize: 10 }}
-                  onPress={() => {
-                    props.navigation.navigate('Cadastro do Animal', { body: 'hi' });
-                  }}
-                />
-              </View>
-            </>
-            <DrawerItem
-              style={{
-                position: 'absolute',
-                left: 0,
-                width: width,
-                height: width,
-              }}
-              label="Article"
-              labelStyle={{ color: '#609806' }}
-              onPress={() => {
-                props.navigation.navigate('Login', { body: 'article' });
-              }}
-            />
-          </View>
-          <View
-            style={[
-              styles.menuItemsCard,
-              { backgroundColor: '#EFFFD5', width: width, height: width },
-            ]}>
-            <View
-              style={[styles.circleContainer, { backgroundColor: '#b5ff39' }]}>
-              <Feather Medical name="briefcase" size={25} color="#609806" />
-            </View>
-  
-            <DrawerItem
-              style={{
-                position: 'absolute',
-                left: 0,
-                width: width,
-                height: width,
-              }}
-              label="Feed"
-              labelStyle={{ color: '#609806' }}
-              onPress={() => {
-                props.navigation.navigate('Página Inicial', { body: 'hello' });
-              }}
-            />
-          </View>
-        </View>
+      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1, backgroundColor: '#88C9BF' }}>
+        <DrawerContainer>
+            <ProfileArea>
+                {userData? <>
+                    <ImageContainer>
+                        {userData.imagePath?
+                            <Image source={uri} resizeMode="cover" style={styles.image} />
+                        :
+                            <Image source={profileImg} resizeMode="cover" style={styles.image} />
+                        }
+                    </ImageContainer>
+                    <LinkButton>
+                        <LinkText>{userData.name}</LinkText>
+                    </LinkButton>
+                </>
+                :
+                <>
+                </>
+                }
+            </ProfileArea>
+            <RoutesArea>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate('Página Inicial')}}>
+                    <Ionicons name="md-home" size={18} color="#595959" style={styles.icon}/>
+                    <LinkText>Página Inicial</LinkText>
+                </LinkButton>
+                {user? 
+                <>
+                    <DivisionText>Sua Área</DivisionText>
+                    <LinkButton onPress={() => {
+                        props.navigation.navigate('Meus Pets')}}>
+                        <LinkText>Meus Pets</LinkText>
+                    </LinkButton>
+                    <LinkButton onPress={() => {
+                        props.navigation.navigate('Cadastro do Animal')}}>
+                        <LinkText>Cadastro de Animal</LinkText>
+                    </LinkButton>
+                </>
+                :
+                <>
+                    <LinkButton onPress={() => {
+                    props.navigation.navigate('Login')}}>
+                        <LinkText>Login</LinkText>
+                    </LinkButton>
+                    <LinkButton onPress={() => {
+                    props.navigation.navigate('SignUp')}}>
+                        <LinkText>Cadastro</LinkText>
+                    </LinkButton>
+                </>
+                }
+                <DivisionText>Animais Disponíveis</DivisionText>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'adoption'})}}>
+                    <LinkText>Adoção</LinkText>
+                </LinkButton>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'help'})}}>
+                    <LinkText>Ajuda</LinkText>
+                </LinkButton>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'sponsorship'})}}>
+                    <LinkText>Apradinhamento</LinkText>
+                </LinkButton>
+            </RoutesArea>
+        </DrawerContainer>
       </DrawerContentScrollView>
     );
   }
@@ -120,7 +129,6 @@ function CustomDrawerContent(props) {
 const Routes = () => {
   return (
     <NavigationContainer>
-        {/* <Drawer.Navigator initialRouteName="Home"> */}
         <Drawer.Navigator
             screenOptions={({ navigation }) => ({
                 headerStyle: {
@@ -188,7 +196,6 @@ const Routes = () => {
                 }}
             />
         </Drawer.Navigator>
-        {/* </Drawer.Navigator> */}
     </NavigationContainer>
   );
 };
