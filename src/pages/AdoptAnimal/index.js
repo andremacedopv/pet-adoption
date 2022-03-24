@@ -115,7 +115,8 @@ const AdoptAnimalPage = ({route, navigation}) => {
               <Field>
                 {pet.adoptionOptions.adoptionTerms && "Termo de adoção "}
                 {pet.adoptionOptions.housePhotos && "Fotos da Casa "}
-                {pet.adoptionOptions.postAdoption && "Visita prévia ao animal de "}
+                {pet.adoptionOptions.visit && "Visita prévia ao animal "}
+                {pet.adoptionOptions.postAdoption && "Acompanhamento pós adoção de "}
                 {pet.adoptionOptions.postAdoptionOptions.oneMonth && "1 mês"}
                 {pet.adoptionOptions.postAdoptionOptions.threeMonths && "3 meses"}
                 {pet.adoptionOptions.postAdoptionOptions.sixMonths && "6 meses"}
