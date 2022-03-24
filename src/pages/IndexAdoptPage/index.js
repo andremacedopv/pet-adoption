@@ -66,7 +66,7 @@ const IndexAdoptPage = ({ route, navigation }) => {
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <PetCard name={item.name} age={item.age} sex={item.sex} 
                     size={item.size} city={item.city} state={item.state} 
-                    photo={item.imagePath} navigation={navigation}></PetCard>  
+                    photo={item.imagePath} id= {item.key} navigation={navigation}></PetCard>  
                 </View>
             )}
         />

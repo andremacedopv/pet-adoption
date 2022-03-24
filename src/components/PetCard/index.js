@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import img from "../../assets/placeholder.jpg"
 
-const PetCard = ({name, sex, age, size, city, state, photo, navigation}) => {
+const PetCard = ({name, sex, age, size, city, state, photo, id, navigation}) => {
 
   const [uri, setUri] = React.useState()
 
@@ -56,7 +56,7 @@ const PetCard = ({name, sex, age, size, city, state, photo, navigation}) => {
         <Title>{name}</Title>
         <FontAwesome name="heart-o" size={24} color="black" />
       </TitleArea>
-      <ImageArea onPress={() => navigation.navigate('Adotar Animal', {id: "15"})}>
+      <ImageArea onPress={() => navigation.navigate('Adotar Animal', {id: id})}>
         <View style={styles.container}>
           <Image source={uri} resizeMode="cover" style={styles.image} />
         </View>

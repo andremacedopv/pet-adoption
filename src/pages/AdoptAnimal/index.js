@@ -1,12 +1,28 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { doc, getDoc } from "firebase/firestore";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
-import { ScrollView, Alert} from 'react-native';
+import { ActivityIndicator, ScrollView, Alert} from 'react-native';
 import img from "../../assets/placeholder.jpg"
 
-const AdoptAnimalPage = () => {
+const AdoptAnimalPage = ({route, navigation}) => {
+
+  let id = route.params.id
+  const [pet, setPet] = useState({})
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const petsRef = doc(database, "pets", id);
+    const docSnap = getDoc(petsRef).then((docSnap) => {
+      setPet(docSnap.data());
+      setLoading(false)
+    }) 
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   return(
     <ScrollView>
@@ -14,26 +30,26 @@ const AdoptAnimalPage = () => {
         <Image source={img}/>
 
         <InfoArea>
-          <Title>Bidu</Title>
+          <Title>{pet.name}</Title>
           
           <InfoSection>
             <InfoRow>
               <Info>
                 <FieldTitle>SEXO</FieldTitle>
-                <Field>Macho</Field>  
+                <Field>{pet.sex}</Field>  
               </Info>
               <Info>
                 <FieldTitle>PORTE</FieldTitle>
-                <Field>Médio</Field>  
+                <Field>{pet.size}</Field>  
               </Info>
               <Info>
                 <FieldTitle>IDADE</FieldTitle>
-                <Field>Adulto</Field>  
+                <Field>{pet.age}</Field>  
               </Info>
             </InfoRow>
             <Info>
               <FieldTitle>LOCALIZAÇÃO</FieldTitle>
-              <Field>Samambaia Sul - Distrito Federal</Field>  
+              <Field>{pet.state}</Field>  
             </Info>
           </InfoSection>
 
@@ -41,21 +57,21 @@ const AdoptAnimalPage = () => {
             <InfoRow>
               <Info>
                 <FieldTitle>CASTRADO</FieldTitle>
-                <Field>Não</Field>  
+                <Field>{pet.health.castrated ? "Sim" : "Não"}</Field>  
               </Info>
               <Info>
                 <FieldTitle>FERMIFUGADO</FieldTitle>
-                <Field>Sim</Field>  
+                <Field>{pet.health.verms ? "Sim" : "Não"}</Field>  
               </Info>
             </InfoRow>
             <InfoRow>
               <Info>
                 <FieldTitle>VACINADO</FieldTitle>
-                <Field>Não</Field>  
+                <Field>{pet.health.vaccinated ? "Sim" : "Não"}</Field>  
               </Info>
               <Info>
                 <FieldTitle>DOENÇAS</FieldTitle>
-                <Field>Nenhuma</Field>  
+                <Field>{pet.health.illness ? pet.health.illness : "Nenhuma"}</Field>  
               </Info>
             </InfoRow>
           </InfoSection>
@@ -63,21 +79,35 @@ const AdoptAnimalPage = () => {
           <InfoSection>
             <Info>
               <FieldTitle>TEMPERAMENTO</FieldTitle>
-              <Field>Calmo e Dócil</Field>  
+              <Field>
+                {pet.temper.calm && "Calmo "}
+                {pet.temper.guard && "Guarda "}
+                {pet.temper.timid && "Tímido "}
+                {pet.temper.loving && "Amoroso "}
+                {pet.temper.playful && "Brincalhão "}
+                {pet.temper.lazy && "Preguiçoso"}
+              </Field>  
             </Info>
           </InfoSection>
 
           <InfoSection>
             <Info>
               <FieldTitle>EXIGÊNCIAS DO DOADOR</FieldTitle>
-              <Field>Termo de adoção, fotos da casa, visita prévia e acompanhamento durante três meses</Field>  
+              <Field>
+                {pet.adoptionOptions.adoptionTerms && "Termo de adoção "}
+                {pet.adoptionOptions.housePhotos && "Fotos da Casa "}
+                {pet.adoptionOptions.postAdoption && "Visita prévia ao animal de "}
+                {pet.adoptionOptions.postAdoptionOptions.oneMonth && "1 mês"}
+                {pet.adoptionOptions.postAdoptionOptions.threeMonths && "3 meses"}
+                {pet.adoptionOptions.postAdoptionOptions.sixMonths && "6 meses"}
+              </Field>  
             </Info>
           </InfoSection>
 
           <InfoSection>
             <Info>
-              <FieldTitle>MAIS SOBRE BIDU</FieldTitle>
-              <Field>Bidu é um cão muito dócil e de fácil convivência. Adora caminhadas e se dá muito bem com crianças. Tem muito medo de raios e de chuva, nesses momentos ele requer mais atenção. Está disponível para adoção pois eu e minha família o encontramos na rua e não podemos mantê-lo em nossa casa. </Field>  
+              <FieldTitle>MAIS SOBRE {pet.name.toUpperCase()}</FieldTitle>
+              <Field>{pet.aboutAnimal}</Field>  
             </Info>
           </InfoSection>
 
