@@ -14,6 +14,7 @@ import RegisterPageOps from '../pages/RegisterPageOps';
 import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
+import AdoptAnimalPage from '../pages/AdoptAnimal';
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import profileImg from "../assets/profile.png";
@@ -195,6 +196,13 @@ const Routes = () => {
                     title: "",
                 }}
             />
+            <Drawer.Screen
+                name="Adotar Animal"
+                component={AdoptAnimalPage}
+                options={{
+                    title: "Adotar Animal",
+                }}
+            /> 
         </Drawer.Navigator>
     </NavigationContainer>
   );

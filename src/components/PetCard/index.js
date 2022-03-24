@@ -6,10 +6,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import img from "../../assets/placeholder.jpg"
 
-
-const PetCard = ({name, sex, age, size, city, state, photo}) => {
+const PetCard = ({name, sex, age, size, city, state, photo, id, navigation}) => {
 
   const [uri, setUri] = React.useState()
+
+  function handleAnimalSelect(){
+    navigation.navigate('Adotar Animal', {id: "15"})
+  }
 
   React.useEffect(() => {
     if(photo){
@@ -48,27 +51,27 @@ const PetCard = ({name, sex, age, size, city, state, photo}) => {
   }
 
   return (
-  <Container>
-    <TitleArea>
-      <Title>{name}</Title>
-      <FontAwesome name="heart-o" size={24} color="black" />
-    </TitleArea>
-    <ImageArea>
-      <View style={styles.container}>
-        <Image source={uri} resizeMode="cover" style={styles.image} />
-      </View>
-    </ImageArea>
-    <DescriptionArea>
-      <LineDescription>
-          <Text>{sexHash[sex]}</Text>
-          <Text>{ageHash[age]}</Text>
-          <Text>{sizeHash[size]}</Text>
-      </LineDescription>
-      <LineDescription>
-          <Text>{city} - {state}</Text>
-      </LineDescription>
-    </DescriptionArea>
-  </Container>  
+    <Container>
+      <TitleArea>
+        <Title>{name}</Title>
+        <FontAwesome name="heart-o" size={24} color="black" />
+      </TitleArea>
+      <ImageArea onPress={() => navigation.navigate('Adotar Animal', {id: id})}>
+        <View style={styles.container}>
+          <Image source={uri} resizeMode="cover" style={styles.image} />
+        </View>
+      </ImageArea>
+      <DescriptionArea>
+        <LineDescription>
+            <Text>{sexHash[sex]}</Text>
+            <Text>{ageHash[age]}</Text>
+            <Text>{sizeHash[size]}</Text>
+        </LineDescription>
+        <LineDescription>
+            <Text>{city} - {state}</Text>
+        </LineDescription>
+      </DescriptionArea>
+    </Container>  
   );
 };
 
