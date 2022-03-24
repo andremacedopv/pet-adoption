@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
 import { doc, getDoc } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
 import { ActivityIndicator, ScrollView, Alert} from 'react-native';
@@ -10,12 +11,30 @@ const AdoptAnimalPage = ({route, navigation}) => {
 
   let id = route.params.id
   const [pet, setPet] = useState({})
+  const [uri, setUri] = useState("")
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const petsRef = doc(database, "pets", id);
     const docSnap = getDoc(petsRef).then((docSnap) => {
-      setPet(docSnap.data());
+      let newPet = docSnap.data()
+      setPet(newPet);
+      if(newPet.imagePath){
+        const storage = getStorage();
+          getDownloadURL(ref(storage,`${newPet.imagePath}`))
+            .then((url) => {
+              const src = {
+                uri: url,
+              }
+              setUri(src)
+            })
+            .catch((e) => {
+              console.log(e)
+            })
+        }
+        else {
+          setUri(img);
+        }
       setLoading(false)
     }) 
   }, []);
@@ -27,7 +46,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
   return(
     <ScrollView>
       <Container>
-        <Image source={img}/>
+        <Image source={uri}/>
 
         <InfoArea>
           <Title>{pet.name}</Title>
