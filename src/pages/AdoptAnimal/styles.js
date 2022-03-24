@@ -21,7 +21,7 @@ export const InfoSection = styled.View`
   padding: 0 10px;
   width: 100%;
   border-bottom-color: #e0e0e0;
-  border-bottom-width: 1;
+  border-bottom-width: 1px;
 `;
 
 export const InfoRow = styled.View`

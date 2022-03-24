@@ -1,7 +1,11 @@
 import React from 'react';
+import {
+    StyleSheet,
+    Image
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MenuButton } from './styles';
+import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
+import { MenuButton, DrawerContainer, ProfileArea, ImageContainer, RoutesArea, LinkButton, LinkText, DivisionText } from './styles';
 import { Ionicons } from '@expo/vector-icons'; 
 import LoginPage from '../pages/LoginPage';
 import IndexAdoptPage from '../pages/IndexAdoptPage';
@@ -11,14 +15,123 @@ import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
 import AdoptAnimalPage from '../pages/AdoptAnimal';
+import { useUserContext } from "../contexts/useUserContext";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import profileImg from "../assets/profile.png";
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+
+const styles = StyleSheet.create({
+    icon: {
+        paddingRight: 5,
+    },
+    image: {
+        height: 70,
+        width: 70,
+        borderRadius: 50,
+    },
+});
+
+function CustomDrawerContent(props) {
+
+    const [uri, setUri] = React.useState()
+    const {user, userData, logout} = useUserContext();
+
+    React.useEffect(() => {
+        if(userData?.imagePath){
+            const storage = getStorage();
+            getDownloadURL(ref(storage,userData.imagePath))
+                .then((url) => {
+                const src = {
+                    uri: url,
+                }
+                setUri(src)
+                })
+                .catch((e) => {
+                    setUri(profileImg)
+                    console.log(e)
+                })
+        }
+        else {
+            setUri(profileImg)
+        }
+    }, [userData]);
+  
+    return (
+      <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1, backgroundColor: '#88C9BF' }}>
+        <DrawerContainer>
+            <ProfileArea>
+                {userData? <>
+                    <ImageContainer>
+                        {userData.imagePath?
+                            <Image source={uri} resizeMode="cover" style={styles.image} />
+                        :
+                            <Image source={profileImg} resizeMode="cover" style={styles.image} />
+                        }
+                    </ImageContainer>
+                    <LinkButton>
+                        <LinkText>{userData.name}</LinkText>
+                    </LinkButton>
+                </>
+                :
+                <>
+                </>
+                }
+            </ProfileArea>
+            <RoutesArea>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate('Página Inicial')}}>
+                    <Ionicons name="md-home" size={18} color="#595959" style={styles.icon}/>
+                    <LinkText>Página Inicial</LinkText>
+                </LinkButton>
+                {user? 
+                <>
+                    <DivisionText>Sua Área</DivisionText>
+                    <LinkButton onPress={() => {
+                        props.navigation.navigate('Meus Pets')}}>
+                        <LinkText>Meus Pets</LinkText>
+                    </LinkButton>
+                    <LinkButton onPress={() => {
+                        props.navigation.navigate('Cadastro do Animal')}}>
+                        <LinkText>Cadastro de Animal</LinkText>
+                    </LinkButton>
+                </>
+                :
+                <>
+                    <LinkButton onPress={() => {
+                    props.navigation.navigate('Login')}}>
+                        <LinkText>Login</LinkText>
+                    </LinkButton>
+                    <LinkButton onPress={() => {
+                    props.navigation.navigate('SignUp')}}>
+                        <LinkText>Cadastro</LinkText>
+                    </LinkButton>
+                </>
+                }
+                <DivisionText>Animais Disponíveis</DivisionText>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'adoption'})}}>
+                    <LinkText>Adoção</LinkText>
+                </LinkButton>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'help'})}}>
+                    <LinkText>Ajuda</LinkText>
+                </LinkButton>
+                <LinkButton onPress={() => {
+                    props.navigation.navigate("Animais Disponíveis", {getItens: 'sponsorship'})}}>
+                    <LinkText>Apradinhamento</LinkText>
+                </LinkButton>
+            </RoutesArea>
+        </DrawerContainer>
+      </DrawerContentScrollView>
+    );
+  }
 
 const Routes = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator
-            screenOptions={{
+        <Drawer.Navigator
+            screenOptions={({ navigation }) => ({
                 headerStyle: {
                     backgroundColor: '#cfe9e5',
                 },
@@ -27,69 +140,70 @@ const Routes = () => {
                 fontWeight: 'bold',
                 },
                 headerLeft: () => (
-                    <MenuButton>
+                    <MenuButton onPress={() => navigation.openDrawer()}>
                         <Ionicons name="md-menu" size={30} color="#595959" />
                     </MenuButton>
                 )
-            }}
+            })}
+            drawerContent={(props) => <CustomDrawerContent {...props} />}
         >
-            <Stack.Screen
+            <Drawer.Screen
                 name="Página Inicial"
                 component={InitialPage}
                 options={{
-                    title: "",
+                    title: "Página Inicial",
                 }}
             />            
-            <Stack.Screen
-                name="Adotar Animal"
-                component={AdoptAnimalPage}
-                options={{
-                    title: "Adotar Animal",
-                }}
-            />  
-            <Stack.Screen
+            <Drawer.Screen
                 name="SignUp"
                 component={RegisterPage}
                 options={{
                     title: "Cadastro Pessoal"
                 }}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Login"
                 component={LoginPage}    
                 options={{
                     title: "Login"
                 }}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Cadastro do Animal"
                 component={AnimalRegisterPage}
                 options={{
                     title: "Cadastro do Animal"
                 }}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Ops"
                 component={RegisterPageOps}
                 options={{
                     title: ""
                 }}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Animais Disponíveis"
                 component={IndexAdoptPage}
                 options={{
                     title: "Animais Disponíveis"
                 }}
             />
-            <Stack.Screen
+            <Drawer.Screen
                 name="Meus Pets"
                 component={MyPetsPage}
                 options={{
                     title: "",
                 }}
             />
-        </Stack.Navigator>
+            <Drawer.Screen
+                name="Adotar Animal"
+                component={AdoptAnimalPage}
+                options={{
+                    title: "Adotar Animal",
+                }}
+            /> 
+        </Drawer.Navigator>
     </NavigationContainer>
   );
 };

@@ -10,8 +10,8 @@ export const Container = styled.View`
 export const TitleArea = styled.View`
     display: flex;
     flex-direction: row;
-    border-top-left-radius: 5;
-    border-top-right-radius: 5;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     justify-content: space-between;
     background-color: #fee29b;
     align-items: center;
@@ -20,7 +20,7 @@ export const TitleArea = styled.View`
 
 export const ImageArea = styled.TouchableOpacity`
     display: flex;
-    height: 150;
+    height: 150px;
 `;
 export const LineDescription = styled.View`
     display: flex;
@@ -37,6 +37,6 @@ export const DescriptionArea = styled.View`
     justify-content: center;
     align-items: center;
     background-color: #fa8;
-    border-bottom-left-radius: 5;
-    border-bottom-right-radius: 5;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 `;
