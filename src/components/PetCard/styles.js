@@ -20,7 +20,7 @@ export const TitleArea = styled.View`
 
 export const ImageArea = styled.TouchableOpacity`
     display: flex;
-    height: 150;
+    height: 150px;
 `;
 export const LineDescription = styled.View`
     display: flex;
