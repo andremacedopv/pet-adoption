@@ -10,6 +10,7 @@ import RegisterPageOps from '../pages/RegisterPageOps';
 import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
+import AdoptAnimalPage from '../pages/AdoptAnimal';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,13 @@ const Routes = () => {
                 )
             }}
         >
+            <Stack.Screen
+                name="Adotar"
+                component={AdoptAnimalPage}
+                options={{
+                    title: "",
+                }}
+            />  
             <Stack.Screen
                 name="Página Inicial"
                 component={InitialPage}
