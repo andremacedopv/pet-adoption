@@ -13,10 +13,10 @@ const IndexNotificationPage = ({navigation}) => {
     <ScrollView>
       <Container>
         <Notification image={img} title="Rex tem um pretendente" onPress={() => navigation.navigate("Requisição de Adoção")}>
-          José Silva desenha adotar um cachorro que você anunciou!
+          José Silva deseja adotar um cachorro que você anunciou!
         </Notification>
         <Notification image={img} title="Fofinho tem um pretendente" >
-          Alexandre da Costa desenha adotar um gato que você anunciou!
+          Alexandre da Costa deseja adotar um gato que você anunciou!
         </Notification>
       </Container>
     </ScrollView>
