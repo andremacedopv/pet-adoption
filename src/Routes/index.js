@@ -15,6 +15,7 @@ import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
 import AdoptAnimalPage from '../pages/AdoptAnimal';
+import AdoptionRequest from '../pages/AdoptionRequest';
 import IndexNotificationPage from '../pages/IndexNotificationPage';
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -215,6 +216,13 @@ const Routes = () => {
                 component={IndexNotificationPage}
                 options={{
                     title: "Notificações",
+                }}
+            /> 
+            <Drawer.Screen
+                name="Requisição de Adoção"
+                component={AdoptionRequest}
+                options={{
+                    title: "",
                 }}
             /> 
         </Drawer.Navigator>

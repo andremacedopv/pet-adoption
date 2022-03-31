@@ -4,15 +4,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Container } from './styles';
 import Notification from './../../components/Notification'
-import { ActivityIndicator, ScrollView, Alert} from 'react-native';
+import {ScrollView} from 'react-native';
 import img from "../../assets/placeholder.jpg"
 
-const IndexNotificationPage = ({}) => {
+const IndexNotificationPage = ({navigation}) => {
 
   return(
     <ScrollView>
       <Container>
-        <Notification image={img} title="Rex tem um pretendente" >
+        <Notification image={img} title="Rex tem um pretendente" onPress={() => navigation.navigate("Requisição de Adoção")}>
           José Silva desenha adotar um cachorro que você anunciou!
         </Notification>
         <Notification image={img} title="Fofinho tem um pretendente" >

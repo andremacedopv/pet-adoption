@@ -25,6 +25,11 @@ export const Container = styled.TouchableOpacity`
             background-color: #ffd358;
         `
     }
+    ${props => (props.type === 'approve') &&
+        `
+            background-color: #2AA10F;
+        `
+    }
     ${props => (props.type === 'link') &&
         `
             box-shadow: none;
@@ -44,6 +49,12 @@ export const ButtonText = styled.Text`
     }
 
     ${props => (props.type === 'facebook') &&
+        `
+            color: #FFF;
+        `
+    }
+
+    ${props => (props.type === 'approve') &&
         `
             color: #FFF;
         `
