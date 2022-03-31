@@ -15,6 +15,7 @@ import InitialPage from '../pages/InitialPage';
 import AnimalRegisterPage from '../pages/AnimalRegisterPage';
 import MyPetsPage from '../pages/MyPetsPage';
 import AdoptAnimalPage from '../pages/AdoptAnimal';
+import IndexNotificationPage from '../pages/IndexNotificationPage';
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import profileImg from "../assets/profile.png";
@@ -143,6 +144,12 @@ const Routes = () => {
                     <MenuButton onPress={() => navigation.openDrawer()}>
                         <Ionicons name="md-menu" size={30} color="#595959" />
                     </MenuButton>
+                ),
+                headerRight: () => (
+                    <MenuButton onPress={() => navigation.navigate('Notificações')}>
+                        <Ionicons style={{marginRight: 10}} name="md-notifications-outline" size={25} color="#595959" />
+                        {/* <Ionicons style={{marginRight: 10}} name="md-notifications" size={30} color="#595959" /> */}
+                    </MenuButton>
                 )
             })}
             drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -201,6 +208,13 @@ const Routes = () => {
                 component={AdoptAnimalPage}
                 options={{
                     title: "Adotar Animal",
+                }}
+            /> 
+            <Drawer.Screen
+                name="Notificações"
+                component={IndexNotificationPage}
+                options={{
+                    title: "Notificações",
                 }}
             /> 
         </Drawer.Navigator>
