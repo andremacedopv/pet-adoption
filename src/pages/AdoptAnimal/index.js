@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { collection, doc, getDoc, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
@@ -42,6 +42,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
     }).then((docSnap) => {
       const userRef = collection(database, "users")
       const q = query(userRef, where("uid", "==", docSnap.data().creator_uid))
+      return q
     }).then((q) => {
       const querySnapshot = getDocs(q);
       return querySnapshot;
@@ -56,8 +57,8 @@ const AdoptAnimalPage = ({route, navigation}) => {
     const message = {
       to: userDeviceID,
       sound: 'default',
-      title: 'Original Title',
-      body: 'And here is the body!',
+      title: 'Seu pet tem um pretendednte',
+      body: `O ${pet.name} recebeu um pretendente para adoção.`,
       data: { someData: 'goes here' },
     };
     await fetch('https://exp.host/--/api/v2/push/send', {
