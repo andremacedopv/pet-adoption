@@ -45,11 +45,16 @@ const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
     const [userData, setUserData] = useState(null)
+    const [expoPushToken, setExpoPushToken] = useState('');
 
     const logout = async () => {
         setUser(null)
         setUserData(null)
     }
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+    }, []);
 
     const login = async ({email, password, navigation}) => {
         const auth = getAuth();
@@ -68,15 +73,10 @@ const UserProvider = ({children}) => {
             var document = querySnapshot.docs[0].data()
             document.id = querySnapshot.docs[0].id
             setUserData(document)
-            // const notify = registerForPushNotificationsAsync()
-            // return registerForPushNotificationsAsync();
             return document.id;
         }).then((id) => {
-            const device = registerForPushNotificationsAsync();
-            return {id, device};
-        }).then(({id, device}) => {
             updateDoc(doc(database, "users", id), {
-                deviceID: device
+                deviceID: expoPushToken
             })
         })
         .then(() => {
