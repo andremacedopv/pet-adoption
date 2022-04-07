@@ -1,18 +1,21 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
 import { ActivityIndicator, ScrollView, Alert} from 'react-native';
 import img from "../../assets/placeholder.jpg"
+import { useUserContext } from "../../contexts/useUserContext";
 
 const AdoptAnimalPage = ({route, navigation}) => {
 
   let id = route.params.id
+  const {userData} = useUserContext();
   const [pet, setPet] = useState({})
+  const [petId, setPetId] = useState({})
   const [uri, setUri] = useState("")
-  const [userDeviceID, setUserDeviceID] = useState("")
+  const [owner, setOwner] = useState({})
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -20,6 +23,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
     const docSnap = getDoc(petsRef)
     .then((docSnap) => {
       let newPet = docSnap.data()
+      setPetId(docSnap.id)
       setPet(newPet);
       if(newPet.imagePath){
         const storage = getStorage();
@@ -48,14 +52,24 @@ const AdoptAnimalPage = ({route, navigation}) => {
       return querySnapshot;
     }).then((querySnapshot) => {
       var document = querySnapshot.docs[0].data()
-      setUserDeviceID(document.deviceID)
+      setOwner(document)
     })
     
   }, []);
 
   async function handleAdoptAnimal() {
+    await addDoc(collection(database, "adoptionRequest"), {
+      ownerUid: owner.uid,
+      ownerName: owner.name,
+      userUid: userData.id,
+      userName: userData.name,
+      petId: petId,
+      petName: pet.name,
+      approved: ''
+    })
+
     const message = {
-      to: userDeviceID,
+      to: owner.deviceID,
       sound: 'default',
       title: 'Seu pet tem um pretendednte',
       body: `O ${pet.name} recebeu um pretendente para adoção.`,
