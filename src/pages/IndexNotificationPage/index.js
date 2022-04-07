@@ -1,9 +1,8 @@
 import {useState, useEffect} from "react";
-import { database, storage } from "../../services/firebase"
+import { database } from "../../services/firebase"
 import { ActivityIndicator, FlatList } from "react-native";
 import { Container } from './styles';
 import Notification from './../../components/Notification'
-import {ScrollView} from 'react-native';
 import { useUserContext } from "../../contexts/useUserContext";
 import img from "../../assets/placeholder.jpg"
 
@@ -20,6 +19,7 @@ const IndexNotificationPage = ({navigation}) => {
         const notification = [];
   
         querySnapshot.forEach(documentSnapshot => {
+          console.log(userData)
             if(documentSnapshot.data().ownerUid === userData.uid){
               notification.push({
                 ...documentSnapshot.data(),
@@ -45,7 +45,7 @@ const IndexNotificationPage = ({navigation}) => {
       data={notifications}
       renderItem={({ item }) => (
         <Container>
-          <Notification image={img} title={`${item.petName} tem um pretendente`} onPress={() => navigation.navigate("Requisição de Adoção")}>
+          <Notification image={img} title={`${item.petName} tem um pretendente`} onPress={() => navigation.navigate("Requisição de Adoção", {item: item})}>
             {`${item.userName} deseja adotar um animal que você anunciou!`}
           </Notification>
         </Container>
