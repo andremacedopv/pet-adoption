@@ -75,9 +75,11 @@ const UserProvider = ({children}) => {
             setUserData(document)
             return document.id;
         }).then((id) => {
-            updateDoc(doc(database, "users", id), {
-                deviceID: expoPushToken
-            })
+            if(expoPushToken !== undefined){
+                updateDoc(doc(database, "users", id), {
+                    deviceID: expoPushToken
+                })
+            }
         })
         .then(() => {
             Alert.alert(
