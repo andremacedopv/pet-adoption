@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
@@ -12,11 +12,13 @@ const AdoptAnimalPage = ({route, navigation}) => {
   let id = route.params.id
   const [pet, setPet] = useState({})
   const [uri, setUri] = useState("")
+  const [userDeviceID, setUserDeviceID] = useState("")
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const petsRef = doc(database, "pets", id);
-    const docSnap = getDoc(petsRef).then((docSnap) => {
+    const docSnap = getDoc(petsRef)
+    .then((docSnap) => {
       let newPet = docSnap.data()
       setPet(newPet);
       if(newPet.imagePath){
@@ -36,8 +38,39 @@ const AdoptAnimalPage = ({route, navigation}) => {
           setUri(img);
         }
       setLoading(false)
-    }) 
+      return docSnap
+    }).then((docSnap) => {
+      const userRef = collection(database, "users")
+      const q = query(userRef, where("uid", "==", docSnap.data().creator_uid))
+      return q
+    }).then((q) => {
+      const querySnapshot = getDocs(q);
+      return querySnapshot;
+    }).then((querySnapshot) => {
+      var document = querySnapshot.docs[0].data()
+      setUserDeviceID(document.deviceID)
+    })
+    
   }, []);
+
+  async function handleAdoptAnimal() {
+    const message = {
+      to: userDeviceID,
+      sound: 'default',
+      title: 'Seu pet tem um pretendednte',
+      body: `O ${pet.name} recebeu um pretendente para adoção.`,
+      data: { someData: 'goes here' },
+    };
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    });
+  }
 
   if (loading) {
     return <ActivityIndicator />;
@@ -134,7 +167,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
         </InfoArea>
 
         <ButtonArea>
-          <Button>PRETENDO ADOTAR</Button>
+          <Button onPress={handleAdoptAnimal}>PRETENDO ADOTAR</Button>
         </ButtonArea>
 
       </Container>
