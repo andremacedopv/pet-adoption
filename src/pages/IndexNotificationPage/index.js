@@ -42,15 +42,15 @@ const IndexNotificationPage = ({navigation}) => {
 
   return(
     <FlatList
-    data={notifications}
-    renderItem={({ item }) => (
-              <Container>
-              <Notification image={img} title={`${item.petName} tem um pretendente`} onPress={() => navigation.navigate("Requisição de Adoção")}>
-                {`${item.userName} deseja adotar um animal que você anunciou!`}
-              </Notification>
-      </Container>
-            )}
-        />
+      data={notifications}
+      renderItem={({ item }) => (
+        <Container>
+          <Notification image={img} title={`${item.petName} tem um pretendente`} onPress={() => navigation.navigate("Requisição de Adoção")}>
+            {`${item.userName} deseja adotar um animal que você anunciou!`}
+          </Notification>
+        </Container>
+      )}
+    />
   )
 
 }
