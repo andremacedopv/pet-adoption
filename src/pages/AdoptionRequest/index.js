@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { doc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, collection, query, where, getDocs, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Container, Image, Title, ImageDiv, TitleDiv, InfoDiv, InfoTitle, Info, ButtonsDiv, ApproveButtons, ButtonDiv } from './styles';
 import Button from './../../components/Button'
@@ -14,19 +14,13 @@ const AdoptionRequest = ({route}) => {
   const [loading, setLoading] = useState({})
 
   useEffect(() => {
-    var usersRef = collection(database, "users");
-    query(usersRef, where("uid", "==", item.userUid))
-    .then((q) => {
-      console.log("aqui!!!!!")
-            const querySnapshot = getDocs(q);
-            return querySnapshot;
-    }).then((querySnapshot) => {
-            var document = querySnapshot.docs[0].data()
-            document.id = querySnapshot.docs[0].id
-            setRequester(document)
-            setLoading(false)
+    const userRef = doc(database, "users", item.userUid);
+    const docSnap = getDoc(userRef)
+    .then((docSnap) => {
+      let request = docSnap.data()
+      setRequester(request);
+      setLoading(false)
     })
-    
   }, [item]);
 
   if (loading) {
@@ -46,15 +40,15 @@ const AdoptionRequest = ({route}) => {
         </TitleDiv>
         <InfoDiv>
           <InfoTitle>Nome</InfoTitle>
-          <Info>{requester.name}</Info>
+          <Info>{requester?.name}</Info>
           <InfoTitle>Idade</InfoTitle>
-          <Info>{requester.age} anos</Info>
+          <Info>{requester?.age} anos</Info>
           <InfoTitle>Cidade</InfoTitle>
-          <Info>{requester.city} - {requester.state}</Info>
+          <Info>{requester?.city} - {requester?.state}</Info>
           <InfoTitle>Telefone</InfoTitle>
-          <Info>{requester.phone}</Info>
+          <Info>{requester?.phone}</Info>
           <InfoTitle>Email</InfoTitle>
-          <Info>{requester.email}</Info>
+          <Info>{requester?.email}</Info>
         </InfoDiv>
         <ButtonsDiv>
           <Button>Mais detalhes do Animal</Button>
