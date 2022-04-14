@@ -21,10 +21,12 @@ const IndexNotificationPage = ({navigation}) => {
         querySnapshot.forEach(documentSnapshot => {
           console.log(userData)
             if(documentSnapshot.data().ownerUid === userData.uid){
-              notification.push({
-                ...documentSnapshot.data(),
-                key: documentSnapshot.id,
-              });
+              if(documentSnapshot.data().approved === ''){
+                 notification.push({
+                  ...documentSnapshot.data(),
+                  key: documentSnapshot.id,
+                });
+              }
             }
         });
   
