@@ -36,7 +36,7 @@ const IndexNotificationPage = ({navigation}) => {
   
     // Unsubscribe from events when no longer in use
     return () => subscriber();
-  }, []);
+  }, [userData]);
 
   if (loading) {
     return <ActivityIndicator />;

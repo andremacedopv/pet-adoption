@@ -19,8 +19,6 @@ const AdoptionRequest = ({route, navigation}) => {
     .then((docSnap) => {
       let request = docSnap.data()
       setRequester(request);
-      console.log(request)
-      console.log(item)
       setLoading(false)
     })
   }, [item]);

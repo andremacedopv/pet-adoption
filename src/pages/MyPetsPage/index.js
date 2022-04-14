@@ -31,7 +31,7 @@ const MyPetsPage = ({navigation}) => {
       
         // Unsubscribe from events when no longer in use
         return () => subscriber();
-      }, []);
+      }, [user]);
 
     if (loading) {
       return <ActivityIndicator />;

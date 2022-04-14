@@ -22,6 +22,8 @@ const LoginPage = ({navigation}) => {
     }
 
     await login({email, password, navigation})
+    setEmail('')
+    setPassword('')
   }
 
   return( 
