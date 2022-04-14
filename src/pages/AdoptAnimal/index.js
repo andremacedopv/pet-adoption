@@ -25,6 +25,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
       let newPet = docSnap.data()
       setPetId(docSnap.id)
       setPet(newPet);
+      console.log(newPet)
       if(newPet.imagePath){
         const storage = getStorage();
           getDownloadURL(ref(storage,`${newPet.imagePath}`))
@@ -55,7 +56,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
       setOwner(document)
     })
     
-  }, []);
+  }, [id]);
 
   async function handleAdoptAnimal() {
     await addDoc(collection(database, "adoptionRequest"), {
@@ -84,6 +85,8 @@ const AdoptAnimalPage = ({route, navigation}) => {
         },
         body: JSON.stringify(message),
     });
+    alert('Seu pedido de adoção foi enviado ao dono desse animal')
+    navigation.navigate('Página Inicial')
   }
 
   if (loading) {

@@ -7,7 +7,7 @@ import Button from './../../components/Button'
 import { ActivityIndicator, ScrollView, Alert} from 'react-native';
 import img from "../../assets/placeholder.jpg"
 
-const AdoptionRequest = ({route}) => {
+const AdoptionRequest = ({route, navigation}) => {
   
   let item = route.params.item
   const [requester, setRequester] = useState({})
@@ -51,7 +51,7 @@ const AdoptionRequest = ({route}) => {
           <Info>{requester?.email}</Info>
         </InfoDiv>
         <ButtonsDiv>
-          <Button>Mais detalhes do Animal</Button>
+          <Button onPress={() => navigation.navigate('Adotar Animal', {id: item.petId})}>Mais detalhes do Animal</Button>
           <ApproveButtons>
             <ButtonDiv>
               <Button type="approve">
