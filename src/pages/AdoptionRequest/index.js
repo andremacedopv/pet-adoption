@@ -54,12 +54,22 @@ const AdoptionRequest = ({route, navigation}) => {
   }
 
   async function handleApprove() {
+    const requestRef = doc(database, "adoptionRequest", item.key);
+    await updateDoc(requestRef, {
+      approved: true
+    });
+
+    const petRef = doc(database, "pets", item.petId);
+    await updateDoc(petRef, {
+      adoption: false,
+      creator_uid: requester.uid
+    });
 
     const message = {
       to: requester.deviceID,
       sound: 'default',
       title: 'Seu pedido de adoção foi aprovado',
-      body: `O ${pet.name} está pronto para ir para sua nova casa.`,
+      body: `O ${item.petName} está pronto para ir para sua nova casa.`,
       data: { someData: 'goes here' },
     };
     await fetch('https://exp.host/--/api/v2/push/send', {
