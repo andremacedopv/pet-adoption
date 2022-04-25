@@ -53,7 +53,7 @@ const IndexAdoptPage = ({ route, navigation }) => {
       
         // Unsubscribe from events when no longer in use
         return () => subscriber();
-      }, []);
+      }, [getItens]);
 
     if (loading) {
       return <ActivityIndicator />;
