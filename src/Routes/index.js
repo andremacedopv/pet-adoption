@@ -20,6 +20,7 @@ import IndexNotificationPage from '../pages/IndexNotificationPage';
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import profileImg from "../assets/profile.png";
+import ChatPage from '../pages/ChatPage';
 
 const Drawer = createDrawerNavigator();
 
@@ -221,6 +222,13 @@ const Routes = () => {
             <Drawer.Screen
                 name="Requisição de Adoção"
                 component={AdoptionRequest}
+                options={{
+                    title: "",
+                }}
+            /> 
+            <Drawer.Screen
+                name="Chat"
+                component={ChatPage}
                 options={{
                     title: "",
                 }}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {GiftedChat} from 'react-native-gifted-chat'
 import {database} from '../../services/firebase'
 import { useUserContext } from "../../contexts/useUserContext";
+import {Container} from './style'
 
 const ChatPage = () => {
 
