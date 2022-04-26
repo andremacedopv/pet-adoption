@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {GiftedChat} from 'react-native-gifted-chat'
 import {database} from '../../services/firebase'
+import { useUserContext } from "../../contexts/useUserContext";
 
 const ChatPage = () => {
 
   const [messages, setMessages] = useState([])
-
+  const { userData } = useUserContext();
+  
   useEffect(() => {
     const subscribe = database.collection('chatId').onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
@@ -34,7 +36,10 @@ const ChatPage = () => {
       <GiftedChat 
         messages={messages}
         onSend={messages => onSend(messages)}
-        // user={__id: user.id}
+        user={{
+          _id: userData.uid,
+          name: userData.name
+        }}
       />
     </Container>
   )};
