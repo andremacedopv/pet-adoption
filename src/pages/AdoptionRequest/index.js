@@ -106,7 +106,7 @@ const AdoptionRequest = ({route, navigation}) => {
         </InfoDiv>
         <ButtonsDiv>
           <Button onPress={() => navigation.navigate('Adotar Animal', {id: item.petId})}>Mais detalhes do Animal</Button>
-          <Button onPress={() => navigation.navigate('Chat')}>Chat</Button>
+          <Button onPress={() => navigation.navigate('Chat', {requester: requester})}>Chat</Button>
           <ApproveButtons>
             <ButtonDiv>
               <Button type="approve" onPress={handleApprove}>
