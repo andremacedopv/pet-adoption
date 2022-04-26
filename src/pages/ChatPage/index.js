@@ -12,25 +12,24 @@ const ChatPage = ({route}) => {
   const requester = route.params.requester
 
   const { userData } = useUserContext();
-  
-  console.log(group)
 
   useEffect(() => {
+
+    setMessages([])
 
     let q = query(collection(database, 'groups'), where('users', 'array-contains', userData.uid))
     getDocs(q)
     .then((querySnapshot) => {
 
       let find = false
-
       querySnapshot.forEach(documentSnapshot => {
         var data = documentSnapshot.data()
         if(data.users.find(element => element == requester.uid)){
+          console.log(documentSnapshot.id)
           setGroup(documentSnapshot.id)
           find = true
         }
       })
-
 
       if(!find){
         addDoc(collection(database, 'groups'), { users: [userData.uid, requester.uid] })
@@ -38,12 +37,14 @@ const ChatPage = ({route}) => {
           setGroup(result.id)
         })
       }
-
     })
+
+  },[userData, requester])
+  
+  useEffect(() => {
+    const q2 = query(collection(database, 'chats'), orderBy('createdAt', 'desc'), where('groupId', '==', group));
     
-    q = query(collection(database, 'chats'), orderBy('createdAt', 'desc'));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => setMessages(
+    const unsubscribe = onSnapshot(q2, (snapshot) => setMessages(
       snapshot.docs.map(doc => ({
         _id: doc.data()._id,
         createdAt: doc.data().createdAt.toDate(),
@@ -51,19 +52,19 @@ const ChatPage = ({route}) => {
         user: doc.data().user,
       }))
     ));
-
+  
     return () => {
       unsubscribe();
     };
-
-  },[])
+  }, [group])
   
   const onSend = useCallback((messages = []) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
     const { _id, createdAt, text, user,} = messages[0]
 
-    addDoc(collection(database, 'chats'), { _id, createdAt,  text, user });
-  }, []);
+    console.log(group)
+    addDoc(collection(database, 'chats'), { _id, createdAt, text, user, groupId: group });
+  }, [group]);
 
   return( 
     <Container>
