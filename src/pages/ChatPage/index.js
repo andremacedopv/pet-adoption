@@ -9,8 +9,6 @@ const ChatPage = () => {
 
   const [messages, setMessages] = useState([])
   const { userData } = useUserContext();
-
-  console.log(messages)
   
   useEffect(() => {
 
