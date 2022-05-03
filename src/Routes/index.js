@@ -17,6 +17,7 @@ import MyPetsPage from '../pages/MyPetsPage';
 import AdoptAnimalPage from '../pages/AdoptAnimal';
 import AdoptionRequest from '../pages/AdoptionRequest';
 import IndexNotificationPage from '../pages/IndexNotificationPage';
+import UserProfilePage from '../pages/UserProfilePage'
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import profileImg from "../assets/profile.png";
@@ -64,14 +65,14 @@ function CustomDrawerContent(props) {
         <DrawerContainer>
             <ProfileArea>
                 {userData? <>
-                    <ImageContainer>
+                    <ImageContainer >
                         {userData.imagePath?
                             <Image source={uri} resizeMode="cover" style={styles.image} />
                         :
                             <Image source={profileImg} resizeMode="cover" style={styles.image} />
                         }
-                    </ImageContainer>
-                    <LinkButton>
+                    </ImageContainer >
+                    <LinkButton onPress={() => {props.navigation.navigate('Perfil de Usuário')}}>
                         <LinkText>{userData.name}</LinkText>
                     </LinkButton>
                 </>
@@ -223,6 +224,13 @@ const Routes = () => {
                 component={AdoptionRequest}
                 options={{
                     title: "",
+                }}
+            /> 
+            <Drawer.Screen
+                name="Perfil de Usuário"
+                component={UserProfilePage}
+                options={{
+                    title: "Perfil de Usuário",
                 }}
             /> 
         </Drawer.Navigator>

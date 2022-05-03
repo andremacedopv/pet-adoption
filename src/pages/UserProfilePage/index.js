@@ -1,20 +1,62 @@
+import React from 'react';
+import {
+    StyleSheet,
+    Image
+} from 'react-native';
 import {useState, useEffect} from "react";
 import Button from './../../components/Button'
 import { database, storage } from "../../services/firebase"
 import { doc, getDoc } from "firebase/firestore";
-import {Container, Info, InfoRow, InfoSection, InfoArea, Image, Field, FieldTitle} from './styles';
+import {Container, ButtonArea, ImageContainer, Info, InfoRow, InfoSection, InfoArea,  Field, FieldTitle} from './styles';
 import { ActivityIndicator, ScrollView, Alert} from 'react-native';
+import { useUserContext } from "../../contexts/useUserContext";
+import profileImg from "../../assets/profile.png";
 
-const UserProfilePage = ({route, navigation}) => {
-    useEffect(() => {
+const styles = StyleSheet.create({
+    icon: {
+        paddingRight: 5,
+    },
+    image: {
+        height: 100,
+        width: 100,
+        borderRadius: 50,
+    },
+});
 
-    }, []);
+const UserProfilePage = () => {
+    const [uri, setUri] = React.useState()
+    const {user, userData, logout} = useUserContext();
+
+    React.useEffect(() => {
+        if(userData?.imagePath){
+            const storage = getStorage();
+            getDownloadURL(ref(storage,userData.imagePath))
+                .then((url) => {
+                const src = {
+                    uri: url,
+                }
+                setUri(src)
+                })
+                .catch((e) => {
+                    setUri(profileImg)
+                    console.log(e)
+                })
+        }
+        else {
+            setUri(profileImg)
+        }
+    }, [userData]);
 
     return (
        <ScrollView>
            <Container>
-                <Image>
-                </Image>                
+                <ImageContainer >
+                    {userData.imagePath?
+                        <Image source={uri} resizeMode="cover" style={styles.image} />
+                    :
+                        <Image source={profileImg} resizeMode="cover" style={styles.image} />
+                    }
+                </ImageContainer >
                 <InfoArea>
                     <InfoRow>Nome</InfoRow>
                     <InfoSection>
