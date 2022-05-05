@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 export const Container = styled.View`
     display: flex;
     flex-direction: column;
+    background-color: #fafafa;
 `;
 
 export const Image = styled.Image`
@@ -31,7 +32,7 @@ export const InfoRow = styled.Text`
 
 export const FieldTitle = styled.Text`
     font-size: 16px;
-    color: blue;
+    color: #2AA10F;
 `;
 
 export const Field = styled.Text`

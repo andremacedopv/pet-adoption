@@ -3,7 +3,7 @@ import {
     StyleSheet,
     Image
 } from 'react-native';
-import {getStorage} from "firebase/storage"
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {useState, useEffect} from "react";
 import Button from './../../components/Button'
 import { database, storage } from "../../services/firebase"
