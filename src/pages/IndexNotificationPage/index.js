@@ -13,6 +13,7 @@ const IndexNotificationPage = ({navigation}) => {
   const {userData} = useUserContext();
 
   useEffect(() => {
+    if(userData){
     const subscriber = database
       .collection('adoptionRequest')
       .onSnapshot(querySnapshot => {
@@ -36,6 +37,7 @@ const IndexNotificationPage = ({navigation}) => {
   
     // Unsubscribe from events when no longer in use
     return () => subscriber();
+    }
   }, [userData]);
 
   if (loading) {

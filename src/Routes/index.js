@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     StyleSheet,
-    Image
+    Image,
+    View
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
@@ -17,6 +18,7 @@ import MyPetsPage from '../pages/MyPetsPage';
 import AdoptAnimalPage from '../pages/AdoptAnimal';
 import AdoptionRequest from '../pages/AdoptionRequest';
 import IndexNotificationPage from '../pages/IndexNotificationPage';
+import IndexMessagesPage from '../pages/IndexMessagesPage';
 import { useUserContext } from "../contexts/useUserContext";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import profileImg from "../assets/profile.png";
@@ -131,6 +133,7 @@ function CustomDrawerContent(props) {
   }
 
 const Routes = () => {
+    const {user, userData, logout} = useUserContext();
   return (
     <NavigationContainer>
         <Drawer.Navigator
@@ -148,10 +151,14 @@ const Routes = () => {
                     </MenuButton>
                 ),
                 headerRight: () => (
-                    <MenuButton onPress={() => navigation.navigate('Notificações')}>
-                        <Ionicons style={{marginRight: 10}} name="md-notifications-outline" size={25} color="#595959" />
-                        {/* <Ionicons style={{marginRight: 10}} name="md-notifications" size={30} color="#595959" /> */}
-                    </MenuButton>
+                    <View style={{flexDirection: "row"}}>
+                        <MenuButton onPress={() => navigation.navigate('Mensagens')}>
+                            <Ionicons style={{marginRight: 10}} name="chatbox-ellipses-outline" size={25} color="#595959" />
+                        </MenuButton>
+                        <MenuButton onPress={() => navigation.navigate('Notificações')}>
+                            <Ionicons style={{marginRight: 10}} name="md-notifications-outline" size={25} color="#595959" />
+                        </MenuButton>
+                    </View>
                 )
             })}
             drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -217,6 +224,13 @@ const Routes = () => {
                 component={IndexNotificationPage}
                 options={{
                     title: "Notificações",
+                }}
+            /> 
+            <Drawer.Screen
+                name="Mensagens"
+                component={IndexMessagesPage}
+                options={{
+                    title: "Mensagens",
                 }}
             /> 
             <Drawer.Screen
