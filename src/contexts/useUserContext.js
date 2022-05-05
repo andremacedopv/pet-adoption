@@ -2,20 +2,59 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import * as firebase from 'firebase/app'
 import { Alert } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, updateDoc } from "firebase/firestore";
 import { database } from '../services/firebase';
 
+import * as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+
 const UserContext = createContext();
+
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+}
 
 const UserProvider = ({children}) => {
 
     const [user, setUser] = useState(null)
     const [userData, setUserData] = useState(null)
+    const [expoPushToken, setExpoPushToken] = useState('');
 
     const logout = async () => {
         setUser(null)
         setUserData(null)
     }
+
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
+    }, []);
 
     const login = async ({email, password, navigation}) => {
         const auth = getAuth();
@@ -34,6 +73,15 @@ const UserProvider = ({children}) => {
             var document = querySnapshot.docs[0].data()
             document.id = querySnapshot.docs[0].id
             setUserData(document)
+            return document.id;
+        }).then((id) => {
+            if(expoPushToken !== undefined){
+                updateDoc(doc(database, "users", id), {
+                    deviceID: expoPushToken
+                })
+            }
+        })
+        .then(() => {
             Alert.alert(
                 null,
                 "Login feito com sucesso",

@@ -1,24 +1,31 @@
 import {useState, useEffect} from "react";
 import { database, storage } from "../../services/firebase"
-import { doc, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import {Container, Image, Title, FieldTitle, Field, InfoArea, InfoSection, Info, InfoRow, ButtonArea} from './styles';
 import Button from './../../components/Button'
 import { ActivityIndicator, ScrollView, Alert} from 'react-native';
 import img from "../../assets/placeholder.jpg"
+import { useUserContext } from "../../contexts/useUserContext";
 
 const AdoptAnimalPage = ({route, navigation}) => {
 
   let id = route.params.id
+  const {userData} = useUserContext();
   const [pet, setPet] = useState({})
+  const [petId, setPetId] = useState({})
   const [uri, setUri] = useState("")
+  const [owner, setOwner] = useState({})
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const petsRef = doc(database, "pets", id);
-    const docSnap = getDoc(petsRef).then((docSnap) => {
+    const docSnap = getDoc(petsRef)
+    .then((docSnap) => {
       let newPet = docSnap.data()
+      setPetId(docSnap.id)
       setPet(newPet);
+      console.log(newPet)
       if(newPet.imagePath){
         const storage = getStorage();
           getDownloadURL(ref(storage,`${newPet.imagePath}`))
@@ -36,8 +43,51 @@ const AdoptAnimalPage = ({route, navigation}) => {
           setUri(img);
         }
       setLoading(false)
-    }) 
-  }, []);
+      return docSnap
+    }).then((docSnap) => {
+      const userRef = collection(database, "users")
+      const q = query(userRef, where("uid", "==", docSnap.data().creator_uid))
+      return q
+    }).then((q) => {
+      const querySnapshot = getDocs(q);
+      return querySnapshot;
+    }).then((querySnapshot) => {
+      var document = querySnapshot.docs[0].data()
+      setOwner(document)
+    })
+    
+  }, [id]);
+
+  async function handleAdoptAnimal() {
+    await addDoc(collection(database, "adoptionRequest"), {
+      ownerUid: owner.uid,
+      ownerName: owner.name,
+      userUid: userData.id,
+      userName: userData.name,
+      petId: petId,
+      petName: pet.name,
+      approved: ''
+    })
+
+    const message = {
+      to: owner.deviceID,
+      sound: 'default',
+      title: 'Seu pet tem um pretendednte',
+      body: `O ${pet.name} recebeu um pretendente para adoção.`,
+      data: { someData: 'goes here' },
+    };
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    });
+    alert('Seu pedido de adoção foi enviado ao dono desse animal')
+    navigation.navigate('Página Inicial')
+  }
 
   if (loading) {
     return <ActivityIndicator />;
@@ -134,7 +184,7 @@ const AdoptAnimalPage = ({route, navigation}) => {
         </InfoArea>
 
         <ButtonArea>
-          <Button>PRETENDO ADOTAR</Button>
+          <Button onPress={handleAdoptAnimal}>PRETENDO ADOTAR</Button>
         </ButtonArea>
 
       </Container>
