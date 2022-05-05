@@ -1,15 +1,38 @@
 import React from 'react';
 import { Image, StyleSheet } from "react-native";
+import {useState, useEffect} from "react";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { Container, TextContainer, ImageDiv, TitleDiv, TextDiv } from './styles';
+import profile from "../../assets/profile.png"
+import img from "../../assets/placeholder.jpg"
 
-const Notification = ({children, onPress, image, title, props}) => {
+const Notification = ({type, children, onPress, image, imagePath, title, props}) => {
+  const [uri, setUri] = useState("")
+
+  useEffect(() => {
+    if(imagePath){
+      const storage = getStorage();
+      getDownloadURL(ref(storage,`${imagePath}`))
+      .then((url) => {
+        const src = {
+          uri: url,
+        }
+        setUri(src)
+      })
+    }
+  }, [imagePath]);
+
   return (
       <Container onPress={onPress} {...props}>
-        {image?
+        {imagePath?
           <ImageDiv> 
-            <Image source={image} resizeMode="cover" style={styles.image} />
+            <Image source={uri} resizeMode="cover" style={styles.image} />
           </ImageDiv>
-        : <></>}
+        : 
+          <ImageDiv> 
+            <Image source={type === 'chat'? profile : img} resizeMode="cover" style={styles.image} />
+          </ImageDiv>
+        }
         <TextContainer >
             <TitleDiv>
               {title}
