@@ -46,7 +46,6 @@ const UserProfilePage = () => {
             setUri(profileImg)
         }
     }, [userData]);
-
     return (
        <ScrollView>
            <Container>
@@ -58,59 +57,44 @@ const UserProfilePage = () => {
                     }
                 </ImageContainer >
                 <InfoArea>
-                    <InfoRow>Nome</InfoRow>
+                    <InfoRow>{userData.name}</InfoRow>
                     <InfoSection>
                         <Info>
                             <FieldTitle>NOME COMPLETO</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.name}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>IDADE</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.age}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>EMAIL</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.email}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>LOCALIZAÇÃO</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.city} - {userData.state}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>ENDEREÇO</FieldTitle>
-                            <Field></Field>
-                        </Info>
-                    </InfoSection>
-                    <InfoSection>
-                        <Info>
-                            <FieldTitle>TELEFONE</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.address}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>NOME DE USUÁRIO</FieldTitle>
-                            <Field></Field>
+                            <Field>{userData.username}</Field>
                         </Info>
                     </InfoSection>
-                    <InfoSection>
-                        <Info>
-                            <FieldTitle>HISTÓRICO</FieldTitle>
-                            </Info>
-                    </InfoSection>
                 </InfoArea>
-                <ButtonArea>
-                    <Button>CHAT</Button>
-                    <Button>HISTÓRIAS</Button>
-                </ButtonArea>
            </Container>
        </ScrollView> 
     );
