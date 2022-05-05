@@ -14,8 +14,8 @@ const ChatPage = ({route}) => {
   const { userData } = useUserContext();
 
   useEffect(() => {
-
     setMessages([])
+    if(userData){
 
     let q = query(collection(database, 'groups'), where('users', 'array-contains', userData.uid))
     getDocs(q)
@@ -38,6 +38,7 @@ const ChatPage = ({route}) => {
         })
       }
     })
+  }
 
   },[userData, requester])
   
@@ -68,14 +69,17 @@ const ChatPage = ({route}) => {
 
   return( 
     <Container>
+      {userData?
       <GiftedChat 
-        messages={messages}
-        onSend={messages => onSend(messages)}
-        user={{
-          _id: userData.uid,
-          name: userData.name
-        }}
+      messages={messages}
+      onSend={messages => onSend(messages)}
+      user={{
+        _id: userData.uid,
+        name: userData.name
+      }}
       />
+      :
+      <></>}
     </Container>
   )};
 

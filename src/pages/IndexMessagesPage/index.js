@@ -55,7 +55,7 @@ const IndexMessagesPage = ({navigation}) => {
       data={chats}
       renderItem={({ item }) => (
         <Container>
-          <Notification type={"chat"} image={img} imagePath={(item.imagePath !== '')? item.imagePath : false} title={`Sua conversa com ${item.name}`} onPress={() => navigation.navigate("Chat", {requester: item})}>
+          <Notification type={"chat"} image={img} imagePath={(item.imagePath !== '')? item.imagePath : false} title={`${item.name}`} onPress={() => navigation.navigate("Chat", {requester: item})}>
           </Notification>
         </Container>
       )}
