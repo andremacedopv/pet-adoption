@@ -51,48 +51,48 @@ const UserProfilePage = () => {
        <ScrollView>
            <Container>
                 <ImageContainer >
-                    {userData.imagePath?
+                    {userData?.imagePath?
                         <Image source={uri} resizeMode="cover" style={styles.image} />
                     :
                         <Image source={profileImg} resizeMode="cover" style={styles.image} />
                     }
                 </ImageContainer >
                 <InfoArea>
-                    <InfoRow>{userData.name}</InfoRow>
+                    <InfoRow>{userData?.name}</InfoRow>
                     <InfoSection>
                         <Info>
                             <FieldTitle>NOME COMPLETO</FieldTitle>
-                            <Field>{userData.name}</Field>
+                            <Field>{userData?.name}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>IDADE</FieldTitle>
-                            <Field>{userData.age}</Field>
+                            <Field>{userData?.age}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>EMAIL</FieldTitle>
-                            <Field>{userData.email}</Field>
+                            <Field>{userData?.email}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>LOCALIZAÇÃO</FieldTitle>
-                            <Field>{userData.city} - {userData.state}</Field>
+                            <Field>{userData?.city} - {userData?.state}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>ENDEREÇO</FieldTitle>
-                            <Field>{userData.address}</Field>
+                            <Field>{userData?.address}</Field>
                         </Info>
                     </InfoSection>
                     <InfoSection>
                         <Info>
                             <FieldTitle>NOME DE USUÁRIO</FieldTitle>
-                            <Field>{userData.username}</Field>
+                            <Field>{userData?.username}</Field>
                         </Info>
                     </InfoSection>
                 </InfoArea>
